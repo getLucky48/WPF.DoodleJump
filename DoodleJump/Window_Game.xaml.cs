@@ -1,18 +1,7 @@
-﻿
-using DoodleJump.Scripts;
+﻿using DoodleJump.Scripts;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace DoodleJump
@@ -21,37 +10,54 @@ namespace DoodleJump
     public partial class Window_Game : Window
     {
 
+        //Инициализируем окно
         public Window_Game() { InitializeComponent(); }
 
-        private DispatcherTimer timer;
+        //Таймер
+        private DispatcherTimer _Timer;
 
-        private Player player; 
+        //Игрок
+        private Player _Player; 
 
+        //Каждый шаг таймера
         private void TimerTick(object sender, EventArgs e)
         {
 
-            player.ChangePlayerPosition();
+            if (!_Player.isAlive)
+            {
 
-            Camera.TransformCamera(Canvas_GameMap, player);
+                Camera.Death(Canvas_GameMap, _Player, Label_GameOver);
 
-            PlatformGenerator.GenerateNewPlatform(Canvas_GameMap, player);
+                return;
+
+            }
+
+            _Player.ChangePlayerPosition();
+
+            Camera.TransformCamera(Canvas_GameMap, _Player);
+
+            PlatformGenerator.GenerateNewPlatform(Canvas_GameMap, _Player);
             
         }
 
+        //Метод вызывается после полной загрузки окна
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
-            timer = new DispatcherTimer();
+            //Настраиваем таймер на 1 мс
+            _Timer = new DispatcherTimer();
 
-            timer.Tick += new EventHandler(TimerTick);
+            _Timer.Tick += new EventHandler(TimerTick);
 
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 1);
+            _Timer.Interval = new TimeSpan(0, 0, 0, 0, 1);
 
-            timer.Start();
+            _Timer.Start();
 
-            player = new Player(Canvas_GameMap, 10.0, 15.0, new Location(250.0, 650.0));
+            //Создаем игрока: канвас, скорость, прыжок, локация
+            _Player = new Player(Canvas_GameMap, 10.0, 15.0, new Location(250.0, 650.0));
 
-            PlatformGenerator.GenerateNewPlatform(Canvas_GameMap, player);
+            //Генерируем новые платформы при необходимости
+            PlatformGenerator.GenerateNewPlatform(Canvas_GameMap, _Player);
 
         }
                
@@ -61,18 +67,18 @@ namespace DoodleJump
             if (e.Key == Key.A)
             {
 
-                player.resetVelocity = false;
+                _Player.resetVelocity = false;
 
-                player.MoveLeft();
+                _Player.MoveLeft();
 
             }
 
             if (e.Key == Key.D)
             {
 
-                player.resetVelocity = false;
+                _Player.resetVelocity = false;
 
-                player.MoveRight();
+                _Player.MoveRight();
 
             }
 
@@ -81,8 +87,10 @@ namespace DoodleJump
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
 
-            player.resetVelocity = true;
+            _Player.resetVelocity = true;
 
         }
+
     }
+
 }

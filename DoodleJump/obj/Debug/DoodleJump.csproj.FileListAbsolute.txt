@@ -15,8 +15,8 @@ C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\Window_Game.g.cs
 C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\Window_Game.baml
 C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\MainWindow.g.cs
 C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\MainWindow.baml
-C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\Player.g.cs
-C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\Player.baml
-C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\Platform.g.cs
-C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\Platform.baml
 C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\Platform.g.cs
+C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\Player.g.cs
+C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\Platform.baml
+C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\Player.baml

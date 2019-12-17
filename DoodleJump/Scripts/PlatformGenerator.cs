@@ -43,6 +43,19 @@ namespace DoodleJump.Scripts
 
         }
 
+        //Удаляет пройденные платформы
+        public static void RemoveAllPlatforms(Canvas tCanvas)
+        {
+
+            for (int i = 0; i < tCanvas.Children.OfType<Platform>().Count(); i++)
+            {
+
+                tCanvas.Children.Remove(tCanvas.Children.OfType<Platform>().ElementAt(i));
+
+            }
+
+        }
+
         //Генерирует 20 следующих платформ
         public static void GenerateNewPlatform(Canvas tCanvas, Player player)
         {
@@ -69,7 +82,7 @@ namespace DoodleJump.Scripts
                 Platform newPlatform = new Platform();
 
                 //Рассчитываем расстояние до следующей платформы
-                double yNext = locLastPlatform.Y - (rand.NextDouble() * player.MaxJump * 6);
+                double yNext = locLastPlatform.Y - (rand.NextDouble() * player.GetMaxJump() * 6);
 
                 //Задаем Y координату для новой платформы
                 newPlatform.SetValue(Canvas.TopProperty, yNext);

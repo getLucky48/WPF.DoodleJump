@@ -11,5 +11,15 @@
             <ImageBrush ImageSource="Sprites/Background.jpg" Stretch="UniformToFill"/>
         </Canvas.Background>
         <local:Platform Height="24" Canvas.Left="267" Canvas.Top="701" Width="100"/>
+        <Label x:Name="Label_GameOver" Content="game over !" Canvas.Left="39" Canvas.Top="180" Height="232" Width="527" RenderTransformOrigin="0.5,0.5" FontSize="100" FontFamily="Ink Free" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" Visibility="Hidden">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-22.487"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
     </Canvas>
 </Window>
