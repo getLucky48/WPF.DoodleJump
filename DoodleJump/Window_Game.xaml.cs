@@ -17,79 +17,7 @@ using System.Windows.Threading;
 
 namespace DoodleJump
 {
-    /*
-    public class Player : Window_Game
-    {
 
-        private double StdVelocity;
-
-        private double CurrentVelocity;
-
-        /// <summary>
-        /// Если игрок зажал клавишу A, то переменная равна -1
-        /// Если игрок зажал клавишу D, то переменная равна 1
-        /// Иначе 0
-        /// </summary>
-        public int LeftNoneRight;
-
-        public Player(double tVelocity)
-        {
-
-            StdVelocity = tVelocity;
-
-            CurrentVelocity = 0;
-
-            LeftNoneRight = 0;
-
-        }
-
-        public void MoveLeft()
-        {
-
-            Image_Player.FlowDirection = FlowDirection.RightToLeft;
-
-            CurrentVelocity = -StdVelocity;
-
-        }
-
-        public void MoveRight()
-        {
-
-            Image_Player.FlowDirection = FlowDirection.LeftToRight;
-
-            CurrentVelocity = StdVelocity;
-
-        }
-
-        public void ChangePlayerPosition()
-        {
-
-            double xPos = (double)Image_Player.GetValue(Canvas.LeftProperty) + CurrentVelocity;
-
-            if (xPos < -35)
-            {
-
-                xPos = 565;
-
-            }
-
-            else if (xPos > 565)
-            {
-
-                xPos = -35;
-
-            }
-
-            Image_Player.SetValue(Canvas.LeftProperty, xPos);
-
-        }
-
-    }
-
-    */
-    /// <summary>
-    /// ///////////////////////////Решить вопрос с НЕактивностью окна
-    /// </summary>
     public partial class Window_Game : Window
     {
 
@@ -97,12 +25,14 @@ namespace DoodleJump
 
         private DispatcherTimer timer;
 
-        Player player; 
+        private Player player; 
 
         private void TimerTick(object sender, EventArgs e)
         {
 
             player.ChangePlayerPosition();
+
+            GeneratePlatforms.CheckPlatforms(Canvas_GameMap, player);
             
         }
 
@@ -117,7 +47,32 @@ namespace DoodleJump
 
             timer.Start();
 
-            player = new Player(Canvas_GameMap, 10.0, 15.0, new Location(300.0, 300.0));  
+            player = new Player(Canvas_GameMap, 10.0, 15.0, new Location(250.0, 650.0));  
+            ////
+            ///
+
+            Platform lastPl = Canvas_GameMap.Children.OfType<Platform>().First<Platform>();
+
+            Location locPl = Location.GetLocation(lastPl);
+
+            Random rand = new Random();
+
+            for (int i = 0; i < 100; i++)
+            {
+
+                Platform newPl = new Platform();
+
+                double nextY = locPl.Y - (rand.NextDouble() * player.MaxJump * 7);
+
+                newPl.SetValue(Canvas.TopProperty, nextY);
+
+                newPl.SetValue(Canvas.LeftProperty, (double)(rand.Next() % 400));
+
+                Canvas_GameMap.Children.Insert(0, newPl);
+
+                locPl = Location.GetLocation(newPl);
+
+            }
 
         }
                

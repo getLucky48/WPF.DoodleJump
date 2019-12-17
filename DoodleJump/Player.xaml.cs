@@ -19,6 +19,7 @@ namespace DoodleJump
 
     public partial class Player : UserControl
     {
+
         //Максимальная скорость игрока по сторонам
         private double MaxVelocity;
 
@@ -26,10 +27,10 @@ namespace DoodleJump
         private double CurrentVelocity;
 
         //Максимальная высота прыжка
-        private double MaxJump;
+        public double MaxJump;
 
         //Текущая высота прыжка. Нужно для плавного подъема и спуска
-        private double CurrentJump;
+        public double CurrentJump;
 
         //Канвас - на чем рисуем и размещаем объекты. Необходимо для проверки координат платформ
         Canvas ParentCanvas;
@@ -76,6 +77,14 @@ namespace DoodleJump
 
             //Устанавливаем Y координату игрока. Отсчет от шапки окна. Да, неудобно :3
             ui.SetValue(Canvas.TopProperty, tLocation.Y);
+
+        }
+
+        //Метод, возвращающий расположение игрока
+        public Location GetLocation()
+        {
+
+            return new Location((double)this.GetValue(Canvas.LeftProperty), (double)this.GetValue(Canvas.TopProperty));
 
         }
 
@@ -207,9 +216,12 @@ namespace DoodleJump
                  * Если игрок хоть пикселем задевает платформу, то отталкивается от нее
                  * 
                 */
-                if(Math.Abs(y_OfPlatformLeft - y_OfuiLeft) < 60)
 
-                    if(((x_OfPlatformLeft <= x_OfuiLeft) && (x_OfuiLeft <= x_OfPlatformLeft + target.Width)) ||
+
+
+                if((Math.Abs(y_OfPlatformLeft - y_OfuiLeft - 50) < 10) && (Math.Abs(y_OfPlatformLeft - y_OfuiLeft- 50) > 0))
+
+                    if (((x_OfPlatformLeft <= x_OfuiLeft) && (x_OfuiLeft <= x_OfPlatformLeft + target.Width)) ||
                         ((x_OfPlatformLeft <= x_OfuiLeft + 50) && (x_OfuiLeft + 50 <= x_OfPlatformLeft + target.Width)))
                     {
 

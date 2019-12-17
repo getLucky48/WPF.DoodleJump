@@ -4,10 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DoodleJump"
-             mc:Ignorable="d" Height="30" Width="126.5">
+             mc:Ignorable="d" Height="13.25" Width="55.871">
     <Grid>
-        
-        <Image HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="126" Source="Sprites/Platform.png"/>
+
+        <Image HorizontalAlignment="Left" VerticalAlignment="Top" Source="Sprites/Platform.png" Stretch="Fill"/>
 
     </Grid>
 </UserControl>
