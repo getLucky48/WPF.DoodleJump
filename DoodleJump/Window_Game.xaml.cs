@@ -32,7 +32,14 @@ namespace DoodleJump
 
             player.ChangePlayerPosition();
 
-            GeneratePlatforms.CheckPlatforms(Canvas_GameMap, player);
+            Camera.TransformCamera(Canvas_GameMap, player);
+
+            if(PlatformGenerator.NeedNewPlatforms(Canvas_GameMap, player))
+            {
+
+                PlatformGenerator.GenerateNewPlatform(Canvas_GameMap, player);
+
+            }
             
         }
 
@@ -47,32 +54,9 @@ namespace DoodleJump
 
             timer.Start();
 
-            player = new Player(Canvas_GameMap, 10.0, 15.0, new Location(250.0, 650.0));  
-            ////
-            ///
+            player = new Player(Canvas_GameMap, 10.0, 15.0, new Location(250.0, 650.0));
 
-            Platform lastPl = Canvas_GameMap.Children.OfType<Platform>().First<Platform>();
-
-            Location locPl = Location.GetLocation(lastPl);
-
-            Random rand = new Random();
-
-            for (int i = 0; i < 100; i++)
-            {
-
-                Platform newPl = new Platform();
-
-                double nextY = locPl.Y - (rand.NextDouble() * player.MaxJump * 7);
-
-                newPl.SetValue(Canvas.TopProperty, nextY);
-
-                newPl.SetValue(Canvas.LeftProperty, (double)(rand.Next() % 400));
-
-                Canvas_GameMap.Children.Insert(0, newPl);
-
-                locPl = Location.GetLocation(newPl);
-
-            }
+            PlatformGenerator.GenerateNewPlatform(Canvas_GameMap, player);
 
         }
                

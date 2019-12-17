@@ -1,31 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Linq;
 using System.Windows.Controls;
 
 namespace DoodleJump.Scripts
 {
-    class GeneratePlatforms
+    class Camera
     {
 
-        public static void CheckPlatforms(Canvas tCanvas, Player player)
+        public static void TransformCamera(Canvas tCanvas, Player player)
         {
 
-            
-
-            if(tCanvas.Children.OfType<Platform>().Count<Platform>() == 1)
-            {
-
-                Location locationOfFirstPlatform = Location.GetLocation(tCanvas.Children.OfType<Platform>().First<Platform>());
-
-
-
-            }
-
-            if(player.GetLocation().Y < 300)
+            if (player.GetLocation().Y < 300)
             {
 
                 double translation = 300 - player.GetLocation().Y;

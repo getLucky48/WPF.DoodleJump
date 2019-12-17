@@ -58,7 +58,8 @@
     <Compile Include="Platform.xaml.cs">
       <DependentUpon>Platform.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Scripts\GeneratePlatforms.cs" />
+    <Compile Include="Scripts\Camera.cs" />
+    <Compile Include="Scripts\PlatformGenerator.cs" />
     <Compile Include="Scripts\Location.cs" />
     <Compile Include="Player.xaml.cs">
       <DependentUpon>Player.xaml</DependentUpon>
