@@ -24,7 +24,7 @@ namespace DoodleJump.Scripts
 
         }
 
-        public Location GetLocation(UIElement ui)
+        public static Location GetLocation(UIElement ui)
         {
 
             Location loc = new Location( (double) ui.GetValue(Canvas.LeftProperty), (double) ui.GetValue(Canvas.TopProperty));

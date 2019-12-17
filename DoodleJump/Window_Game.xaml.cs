@@ -117,14 +117,17 @@ namespace DoodleJump
 
             timer.Start();
 
-            player = new Player(Canvas_GameMap, 2.5, new Location(300.0, 200.0));  
+            player = new Player(Canvas_GameMap, 10.0, 15.0, new Location(300.0, 300.0));  
 
         }
                
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
+
             if (e.Key == Key.A)
             {
+
+                player.resetVelocity = false;
 
                 player.MoveLeft();
 
@@ -133,15 +136,18 @@ namespace DoodleJump
             if (e.Key == Key.D)
             {
 
+                player.resetVelocity = false;
+
                 player.MoveRight();
 
             }
+
         }
 
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
 
-
+            player.resetVelocity = true;
 
         }
     }

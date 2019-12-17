@@ -10,6 +10,9 @@
         <Canvas.Background>
             <ImageBrush ImageSource="Sprites/Background.jpg" Stretch="UniformToFill"/>
         </Canvas.Background>
-        <Rectangle Fill="#FFF4F4F5" Height="42" Canvas.Left="90" Stroke="Black" Canvas.Top="704" Width="441"/>
+        <local:Platform Height="30" Canvas.Left="228" Canvas.Top="714" Width="125"/>
+        <local:Platform Height="30" Canvas.Left="358" Canvas.Top="714" Width="125"/>
+        <local:Platform Height="30" Canvas.Left="342" Canvas.Top="558" Width="125"/>
+        <local:Platform Height="30" Canvas.Left="103" Canvas.Top="714" Width="125"/>
     </Canvas>
 </Window>
