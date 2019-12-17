@@ -34,12 +34,7 @@ namespace DoodleJump
 
             Camera.TransformCamera(Canvas_GameMap, player);
 
-            if(PlatformGenerator.NeedNewPlatforms(Canvas_GameMap, player))
-            {
-
-                PlatformGenerator.GenerateNewPlatform(Canvas_GameMap, player);
-
-            }
+            PlatformGenerator.GenerateNewPlatform(Canvas_GameMap, player);
             
         }
 

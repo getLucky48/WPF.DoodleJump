@@ -6,10 +6,13 @@ namespace DoodleJump.Scripts
     public class Location
     {
 
+        //Ось x
         public double X;
 
+        //Ось Y
         public double Y;
 
+        //Конструктор класса
         public Location(double tX, double tY)
         {
 
@@ -19,6 +22,7 @@ namespace DoodleJump.Scripts
 
         }
 
+        //Получить координаты элемента
         public static Location GetLocation(UIElement ui)
         {
 

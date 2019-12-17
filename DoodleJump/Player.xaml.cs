@@ -217,8 +217,6 @@ namespace DoodleJump
                  * 
                 */
 
-
-
                 if((Math.Abs(y_OfPlatformLeft - y_OfuiLeft - 50) < 10) && (Math.Abs(y_OfPlatformLeft - y_OfuiLeft- 50) > 0))
 
                     if (((x_OfPlatformLeft <= x_OfuiLeft) && (x_OfuiLeft <= x_OfPlatformLeft + target.Width)) ||
