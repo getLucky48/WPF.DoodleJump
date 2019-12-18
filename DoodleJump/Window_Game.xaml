@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DoodleJump"
         mc:Ignorable="d"
-        Title="DoodleJump | Score: 0" Height="800" Width="600" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" KeyDown="Window_KeyDown" KeyUp="Window_KeyUp">
+        Title="DoodleJump | Score: 0" Height="800" Width="600" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="_Window_Loaded" KeyUp="_Window_KeyUp" KeyDown="_Window_KeyDown">
     <Canvas x:Name="Canvas_GameMap">
         <Canvas.Background>
             <ImageBrush ImageSource="Sprites/Background.jpg" Stretch="UniformToFill"/>
@@ -18,8 +18,8 @@
                     </TransformGroup>
                 </Label.RenderTransform>
             </Label>
-            <Image x:Name="Button_PlayAgain" VerticalAlignment="Top" Height="48" Source="Sprites/Button_playAgain.png" PreviewMouseDown="Button_PlayAgain_PreviewMouseDown" Margin="351,228,52,0"/>
-            <Image x:Name="Button_Menu" VerticalAlignment="Top" Height="48" Source="Sprites/Button_menu.png" PreviewMouseDown="Button_Start_PreviewMouseDown" Margin="351,302,52,0"/>
+            <Image x:Name="Button_PlayAgain" VerticalAlignment="Top" Height="48" Source="Sprites/Button_playAgain.png" PreviewMouseDown="_Button_PlayAgain_PreviewMouseDown" Margin="351,228,52,0"/>
+            <Image x:Name="Button_Menu" VerticalAlignment="Top" Height="48" Source="Sprites/Button_menu.png" PreviewMouseDown="_Button_Start_PreviewMouseDown" Margin="351,302,52,0"/>
             <Label x:Name="Label_Score" Content="Score: " HorizontalAlignment="Left" Margin="21,275,0,0" VerticalAlignment="Top" Width="288" FontFamily="Segoe UI Black" FontSize="20"/>
         </Grid>
     </Canvas>

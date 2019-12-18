@@ -6,7 +6,7 @@ namespace DoodleJump.Scripts
 {
     class PlatformGenerator
     {
-        //300 700
+
         //Метод для проверки на необходимость новых платформ
         private static bool _NeedNewPlatforms(Canvas tCanvas, Player player)
         {

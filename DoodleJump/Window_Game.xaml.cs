@@ -1,6 +1,7 @@
 ﻿using DoodleJump.Scripts;
 using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -20,7 +21,7 @@ namespace DoodleJump
         private Player _Player; 
 
         //Каждый шаг таймера
-        private void TimerTick(object sender, EventArgs e)
+        private void _TimerTick(object sender, EventArgs e)
         {
 
             if (!_Player.isAlive)
@@ -32,9 +33,11 @@ namespace DoodleJump
 
             }
 
+            _MovePlayer();
+
             _Player.ChangePlayerPosition();
 
-            UpdateScore();
+            _UpdateScore();
 
             Camera.TransformCamera(Canvas_GameMap, _Player);
 
@@ -43,7 +46,7 @@ namespace DoodleJump
         }
 
         //Обновление очков в шапке окна
-        private void UpdateScore()
+        private void _UpdateScore()
         {
 
             this.Title = "DoodleJump | Score: " + _Player.score;
@@ -51,7 +54,7 @@ namespace DoodleJump
         }
 
         //Метод запуска игры и первоначальной настройки
-        private void StartGame()
+        private void _StartGame()
         {
 
             //Скрываем надпись о проигрыше
@@ -60,7 +63,7 @@ namespace DoodleJump
             //Настраиваем таймер на 1 мс
             _Timer = new DispatcherTimer();
 
-            _Timer.Tick += new EventHandler(TimerTick);
+            _Timer.Tick += new EventHandler(_TimerTick);
 
             _Timer.Interval = new TimeSpan(0, 0, 0, 0, 1);
 
@@ -75,18 +78,18 @@ namespace DoodleJump
         }
 
         //Метод вызывается после полной загрузки окна
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void _Window_Loaded(object sender, RoutedEventArgs e)
         {
 
             //Запускаем игру
-            StartGame();
+            _StartGame();
 
         }
-               
-        private void Window_KeyDown(object sender, KeyEventArgs e)
-        { 
 
-            if (e.Key == Key.A)
+        private void _MovePlayer()
+        {
+
+            if (_LeftPress)
             {
 
                 _Player.resetVelocity = false;
@@ -94,8 +97,7 @@ namespace DoodleJump
                 _Player.MoveLeft();
 
             }
-
-            if (e.Key == Key.D)
+            else if (_RightPress)
             {
 
                 _Player.resetVelocity = false;
@@ -106,25 +108,59 @@ namespace DoodleJump
 
         }
 
-        private void Window_KeyUp(object sender, KeyEventArgs e)
+        private bool _LeftPress = false;
+        private bool _RightPress = false;
+
+        private void _Window_KeyDown(object sender, KeyEventArgs e)
         {
+
+            if(e.Key == Key.A)
+            {
+
+                _LeftPress = true;
+
+            }
+            if(e.Key == Key.D)
+            {
+
+                _RightPress = true;
+
+            }
+
+        }
+
+        private void _Window_KeyUp(object sender, KeyEventArgs e)
+        {
+
+            if (e.Key == Key.A)
+            {
+
+                _LeftPress = false;
+
+            }
+            if (e.Key == Key.D)
+            {
+
+                _RightPress = false;
+
+            }
 
             _Player.resetVelocity = true;
 
         }
 
-        private void Button_PlayAgain_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private void _Button_PlayAgain_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
 
             //Останавливаем таймер, иначе отсчет времени в игре сломается
             _Timer.Stop();
 
             //Запускаем игру снова
-            StartGame();
+            _StartGame();
 
         }
 
-        private void Button_Start_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private void _Button_Start_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
 
             MainWindow mainWindow = new MainWindow();
