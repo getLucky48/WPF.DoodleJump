@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DoodleJump.Scripts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,24 +16,24 @@ using System.Windows.Shapes;
 
 namespace DoodleJump
 {
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
+
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
+
             InitializeComponent();
+
         }
 
-        private void Button_Exit_Click(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
-            this.Close();
+            Player player = new Player(Canvas_Launcher, 10.0, 12.5, new Location(35.0, 200.0));
 
         }
 
-        private void Button_Start_Click(object sender, RoutedEventArgs e)
+        private void Button_Start_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
 
             Window_Game windowGame = new Window_Game();
@@ -42,5 +43,13 @@ namespace DoodleJump
             this.Close();
 
         }
+
+        private void Button_Exit_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+            this.Close();
+
+        }
     }
+
 }

@@ -5,21 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DoodleJump"
         mc:Ignorable="d"
-        Title="DoodleJump | Score: 0 / Top: 0" Height="800" Width="600" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" KeyDown="Window_KeyDown" KeyUp="Window_KeyUp">
+        Title="DoodleJump | Score: 0" Height="800" Width="600" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" KeyDown="Window_KeyDown" KeyUp="Window_KeyUp">
     <Canvas x:Name="Canvas_GameMap">
         <Canvas.Background>
             <ImageBrush ImageSource="Sprites/Background.jpg" Stretch="UniformToFill"/>
         </Canvas.Background>
-        <local:Platform Height="24" Canvas.Left="267" Canvas.Top="701" Width="100"/>
-        <Label x:Name="Label_GameOver" Content="game over !" Canvas.Left="39" Canvas.Top="180" Height="232" Width="527" RenderTransformOrigin="0.5,0.5" FontSize="100" FontFamily="Ink Free" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" Visibility="Hidden">
-            <Label.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-22.487"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Label.RenderTransform>
-        </Label>
+        <Grid x:Name="Grid_GameOver" Height="350" Width="527" Canvas.Left="36" Canvas.Top="178" Visibility="Hidden">
+            <Label x:Name="Label_GameOver" Content="game over !" RenderTransformOrigin="0.5,0.5" FontSize="100" FontFamily="Ink Free" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" Margin="0,0,0,118">
+                <Label.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="-22.487"/>
+                    </TransformGroup>
+                </Label.RenderTransform>
+            </Label>
+            <Image x:Name="Button_PlayAgain" VerticalAlignment="Top" Height="48" Source="Sprites/Button_playAgain.png" PreviewMouseDown="Button_PlayAgain_PreviewMouseDown" Margin="351,228,52,0"/>
+            <Image x:Name="Button_Menu" VerticalAlignment="Top" Height="48" Source="Sprites/Button_menu.png" PreviewMouseDown="Button_Start_PreviewMouseDown" Margin="351,302,52,0"/>
+            <Label x:Name="Label_Score" Content="Score: " HorizontalAlignment="Left" Margin="21,275,0,0" VerticalAlignment="Top" Width="288" FontFamily="Segoe UI Black" FontSize="20"/>
+        </Grid>
     </Canvas>
 </Window>

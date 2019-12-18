@@ -34,6 +34,9 @@ namespace DoodleJump
         //Живой?
         public bool isAlive;
 
+        //Счет
+        public long score;
+
         //Возвращает максимальную высоту прыжка
         public double GetMaxJump() { return _MaxJump; }
 
@@ -46,6 +49,7 @@ namespace DoodleJump
             _MaxJump = tJump;
 
             _CurrentVelocity = 0;
+            score = 0;
 
             _ParentCanvas = tCanvas;
 
@@ -234,7 +238,7 @@ namespace DoodleJump
         {
 
             //Если игрок упал ниже окна (ниже 800 пикселей), то игра окончена
-            if(Location.GetLocation(this).Y > 900)
+            if(Location.GetLocation(this).Y > 850)
             {
 
                 isAlive = false;

@@ -26,7 +26,7 @@ namespace DoodleJump
             if (!_Player.isAlive)
             {
 
-                Camera.Death(Canvas_GameMap, _Player, Label_GameOver);
+                Camera.Death(Canvas_GameMap, _Player, Grid_GameOver);
 
                 return;
 
@@ -34,15 +34,28 @@ namespace DoodleJump
 
             _Player.ChangePlayerPosition();
 
+            UpdateScore();
+
             Camera.TransformCamera(Canvas_GameMap, _Player);
 
             PlatformGenerator.GenerateNewPlatform(Canvas_GameMap, _Player);
             
         }
 
-        //Метод вызывается после полной загрузки окна
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        //Обновление очков в шапке окна
+        private void UpdateScore()
         {
+
+            this.Title = "DoodleJump | Score: " + _Player.score;
+
+        }
+
+        //Метод запуска игры и первоначальной настройки
+        private void StartGame()
+        {
+
+            //Скрываем надпись о проигрыше
+            Grid_GameOver.Visibility = Visibility.Hidden;
 
             //Настраиваем таймер на 1 мс
             _Timer = new DispatcherTimer();
@@ -60,9 +73,18 @@ namespace DoodleJump
             PlatformGenerator.GenerateNewPlatform(Canvas_GameMap, _Player);
 
         }
+
+        //Метод вызывается после полной загрузки окна
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
+            //Запускаем игру
+            StartGame();
+
+        }
                
         private void Window_KeyDown(object sender, KeyEventArgs e)
-        {
+        { 
 
             if (e.Key == Key.A)
             {
@@ -88,6 +110,28 @@ namespace DoodleJump
         {
 
             _Player.resetVelocity = true;
+
+        }
+
+        private void Button_PlayAgain_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+            //Останавливаем таймер, иначе отсчет времени в игре сломается
+            _Timer.Stop();
+
+            //Запускаем игру снова
+            StartGame();
+
+        }
+
+        private void Button_Start_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+            MainWindow mainWindow = new MainWindow();
+
+            mainWindow.Show();
+
+            this.Close();
 
         }
 

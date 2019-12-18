@@ -18,6 +18,9 @@ namespace DoodleJump.Scripts
                 //Просчитываем смещение
                 double translation = 300 - player.GetLocation().Y;
 
+                //Добавляем очки игроку
+                player.score += (long) translation;
+
                 //Задаем новые координаты Y игроку
                 player.SetValue(Canvas.TopProperty, (double)player.GetValue(Canvas.TopProperty) + translation);
 
@@ -33,12 +36,26 @@ namespace DoodleJump.Scripts
 
         }
 
-        public static void Death(Canvas tCanvas, Player player, Label over)
+        public static void Death(Canvas tCanvas, Player player, Grid over)
         {
 
             PlatformGenerator.RemoveAllPlatforms(tCanvas);
 
             over.Visibility = Visibility.Visible;
+
+            foreach(var target in over.Children.OfType<Label>())
+            {
+
+                if (target.Name.Contains("Label_Score"))
+                {
+
+                    target.Content = "Score: " + player.score;
+
+                    return;
+
+                }
+
+            }
 
         }
 

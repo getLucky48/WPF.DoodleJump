@@ -5,12 +5,37 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DoodleJump"
         mc:Ignorable="d"
-        Title="Launcher" Height="349" Width="372.5" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
-    <Grid>
-        <Label x:Name="Label_Title" Content="DoodleJump" HorizontalAlignment="Left" Margin="10,24,0,0" VerticalAlignment="Top" FontSize="36" FontFamily="Segoe UI Black" Width="346" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-        <Button x:Name="Button_Start" Content="СТАРТ" Margin="111,121,111,0" VerticalAlignment="Top" Height="48" FontSize="20" FontFamily="Segoe UI Black" Click="Button_Start_Click"/>
-        <Button x:Name="Button_Exit" Content="ВЫХОД" Margin="111,208,111,0" VerticalAlignment="Top" Height="48" FontSize="20" FontFamily="Segoe UI Black" Click="Button_Exit_Click"/>
+        Title="Launcher" Height="349" Width="372.5" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
+    <Canvas x:Name="Canvas_Launcher">
+        <Canvas.Background>
+            <ImageBrush ImageSource="Sprites/Background.jpg" Stretch="UniformToFill">
+                <ImageBrush.RelativeTransform>
+                    <TransformGroup>
+                        <ScaleTransform CenterY="0.5" CenterX="0.5" ScaleX="2" ScaleY="2"/>
+                        <SkewTransform CenterY="0.5" CenterX="0.5"/>
+                        <RotateTransform CenterY="0.5" CenterX="0.5"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </ImageBrush.RelativeTransform>
+            </ImageBrush>
+        </Canvas.Background>
+        <Label x:Name="Label_Title" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="308" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" RenderTransformOrigin="0.5,0.5" Height="56" Canvas.Left="32" Canvas.Top="34">
+            <Label.Background>
+                <ImageBrush ImageSource="Sprites/Label_Title.png"/>
+            </Label.Background>
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="-11.369"/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <Image x:Name="Button_Start" VerticalAlignment="Top" Height="48" Canvas.Left="130" Canvas.Top="120" Width="124" Source="Sprites/Button_play.png" PreviewMouseDown="Button_Start_PreviewMouseDown"/>
+        <Image x:Name="Button_Exit" VerticalAlignment="Top" Height="48" Canvas.Left="130" Canvas.Top="201" Width="124" Source="Sprites/Button_Exit.png" PreviewMouseDown="Button_Exit_PreviewMouseDown">
+        </Image>
+        <local:Platform HorizontalAlignment="Left" Height="17" Margin="17,278,0,0" VerticalAlignment="Top" Width="85"/>
+        <local:Platform HorizontalAlignment="Left" Height="17" Margin="271,177,0,0" VerticalAlignment="Top" Width="85"/>
+        <local:Platform HorizontalAlignment="Left" Height="17" VerticalAlignment="Top" Width="85" Canvas.Left="254" Canvas.Top="89"/>
 
-    </Grid>
+    </Canvas>
 
 </Window>

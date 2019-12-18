@@ -6,10 +6,24 @@ namespace DoodleJump.Scripts
 {
     class PlatformGenerator
     {
-
+        //300 700
         //Метод для проверки на необходимость новых платформ
         private static bool _NeedNewPlatforms(Canvas tCanvas, Player player)
         {
+
+            //Создаем начальную платформу
+            if(tCanvas.Children.OfType<Platform>().Count() == 0)
+            {
+
+                Platform plat = new Platform();
+
+                plat.SetValue(Canvas.LeftProperty, 250.0);
+
+                plat.SetValue(Canvas.TopProperty, 725.0);
+
+                tCanvas.Children.Insert(0, plat);
+
+            }
 
             //Получаем самую последнюю созданную платформу. Хоть и написано First, но вернет последнюю, т.к. в списке
             //она будет в самом начале

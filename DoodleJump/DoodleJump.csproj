@@ -127,5 +127,14 @@
   <ItemGroup>
     <Resource Include="Sprites\Player.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Sprites\Button_Exit.png" />
+    <Resource Include="Sprites\Button_menu.png" />
+    <Resource Include="Sprites\Button_play.png" />
+    <Resource Include="Sprites\Button_playAgain.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Sprites\Label_Title.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
