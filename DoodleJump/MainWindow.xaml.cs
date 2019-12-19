@@ -17,9 +17,9 @@ using System.Windows.Shapes;
 namespace DoodleJump
 {
 
-    public partial class MainWindow : Window
+    public partial class Window_GameOver : Window
     {
-        public MainWindow()
+        public Window_GameOver()
         {
 
             InitializeComponent();

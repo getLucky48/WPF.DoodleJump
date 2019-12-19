@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace DoodleJump.Scripts
@@ -15,13 +16,22 @@ namespace DoodleJump.Scripts
             if(tCanvas.Children.OfType<Platform>().Count() == 0)
             {
 
-                Platform plat = new Platform();
+                Platform FirtsPlatform = new Platform();
 
-                plat.SetValue(Canvas.LeftProperty, 250.0);
+                //Высчитываем центр по иксу
+                double platX = (tCanvas.ActualWidth / 2) - (FirtsPlatform.Width / 2);
 
-                plat.SetValue(Canvas.TopProperty, 725.0);
+                //Высчитываем нижнюю координату (~ 0.05 высоты окна от низа)
+                double platY = (tCanvas.ActualHeight * 0.95) - (FirtsPlatform.Height / 2);
 
-                tCanvas.Children.Insert(0, plat);
+                //Устанавливаем координату X
+                FirtsPlatform.SetValue(Canvas.LeftProperty, platX);
+
+                //Устанавливаем координату Y
+                FirtsPlatform.SetValue(Canvas.TopProperty, platY);
+
+                //Вставляем элемент на игровое поле
+                tCanvas.Children.Insert(0, FirtsPlatform);
 
             }
 
@@ -29,8 +39,8 @@ namespace DoodleJump.Scripts
             //она будет в самом начале
             Platform lastPlatform = tCanvas.Children.OfType<Platform>().First();
 
-            //Если игрок находится за 300 пикселей до последней платформы, то нужно создавать новые
-            if (Math.Abs(player.GetLocation().Y - Location.GetLocation(lastPlatform).Y) < 300) { return true; }
+            //Если игрок находится за 40% от высоты игрового поля до последней платформы, то нужно создавать новые
+            if (Math.Abs(player.GetLocation().Y - Location.GetLocation(lastPlatform).Y) < (tCanvas.ActualHeight * 0.4)) { return true; }
 
             return false;
 
@@ -45,26 +55,13 @@ namespace DoodleJump.Scripts
             for(int i = 0; i < tCanvas.Children.OfType<Platform>().Count(); i++)
             {
 
-                //Если текущий элемент ниже окна (ниже 800 пикселей), то удалить
-                if(Location.GetLocation(tCanvas.Children.OfType<Platform>().ElementAt(i)).Y > 900)
+                //Если текущий элемент ниже окна на 5% от высоты игрового поля, то удалить
+                if(Location.GetLocation(tCanvas.Children.OfType<Platform>().ElementAt(i)).Y > (tCanvas.ActualHeight * 1.05))
                 {
 
                     tCanvas.Children.Remove(tCanvas.Children.OfType<Platform>().ElementAt(i));
 
                 }
-
-            }
-
-        }
-
-        //Удаляет пройденные платформы
-        public static void RemoveAllPlatforms(Canvas tCanvas)
-        {
-
-            for (int i = 0; i < tCanvas.Children.OfType<Platform>().Count(); i++)
-            {
-
-                tCanvas.Children.Remove(tCanvas.Children.OfType<Platform>().ElementAt(i));
 
             }
 
@@ -98,11 +95,13 @@ namespace DoodleJump.Scripts
                 //Рассчитываем расстояние до следующей платформы
                 double yNext = locLastPlatform.Y - (rand.NextDouble() * player.GetMaxJump() * 6);
 
+                double border = 10.0;
+
                 //Задаем Y координату для новой платформы
                 newPlatform.SetValue(Canvas.TopProperty, yNext);
 
                 //Задаем X координату для новой платформы
-                newPlatform.SetValue(Canvas.LeftProperty, 10 + (rand.Next() % (590 - newPlatform.Width)));
+                newPlatform.SetValue(Canvas.LeftProperty, border + (rand.Next() % ((tCanvas.ActualWidth - border) - newPlatform.Width)));
 
                 //Добавляем новую платформу в игровую зону
                 tCanvas.Children.Insert(0, newPlatform);

@@ -11,12 +11,13 @@ namespace DoodleJump.Scripts
         public static void TransformCamera(Canvas tCanvas, Player player)
         {
 
-            //Если игрок достиг определенной высоты, то передвинуть игрока и все платформы
-            if (player.GetLocation().Y < 300)
+            //Если игрок достиг определенной высоты (40% до шапки окна от общей высоты игрового поля), 
+            //то передвинуть игрока и все платформы
+            if (player.GetLocation().Y < (tCanvas.ActualHeight * 0.4))
             {
 
                 //Просчитываем смещение
-                double translation = 300 - player.GetLocation().Y;
+                double translation = (tCanvas.ActualHeight * 0.4) - player.GetLocation().Y;
 
                 //Добавляем очки игроку
                 player.score += (long) translation;
@@ -29,29 +30,6 @@ namespace DoodleJump.Scripts
                 {
 
                     target.SetValue(Canvas.TopProperty, (double)target.GetValue(Canvas.TopProperty) + translation);
-
-                }
-
-            }
-
-        }
-
-        public static void Death(Canvas tCanvas, Player player, Grid over)
-        {
-
-            PlatformGenerator.RemoveAllPlatforms(tCanvas);
-
-            over.Visibility = Visibility.Visible;
-
-            foreach(var target in over.Children.OfType<Label>())
-            {
-
-                if (target.Name.Contains("Label_Score"))
-                {
-
-                    target.Content = "Score: " + player.score;
-
-                    return;
 
                 }
 

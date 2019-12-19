@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\1162262\source\repos\DoodleJump\DoodleJump\App.xaml
-4540550960
+51389139792
 
-11-297641345
+121088720144
 131569487696
-MainWindow.xaml;Platform.xaml;Player.xaml;Window_Game.xaml;
+MainWindow.xaml;Platform.xaml;Player.xaml;Window_Game.xaml;Window_Gameover.xaml;
 
 False
 

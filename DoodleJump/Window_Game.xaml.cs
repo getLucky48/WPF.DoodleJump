@@ -1,7 +1,6 @@
 ﻿using DoodleJump.Scripts;
 using System;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -10,6 +9,26 @@ namespace DoodleJump
 
     public partial class Window_Game : Window
     {
+
+        //Ширина окна с игрой равна 30% от ширины разрешения экрана
+        private double _Width = SystemParameters.PrimaryScreenWidth * 0.6;
+
+        //Высота окна с игрой равна 70% от высоты разрешения экрана
+        private double _Height = SystemParameters.PrimaryScreenHeight * 0.7;
+
+        //Применить настройки к окну
+        private void _AcceptWindowSettings()
+        {
+
+            this.Width = _Width;
+
+            this.Height = _Height;
+
+            this.Top = (SystemParameters.PrimaryScreenHeight / 2) - (this.Height / 2);
+
+            this.Left = (SystemParameters.PrimaryScreenWidth / 2) - (this.Width / 2);
+
+        }
 
         //Инициализируем окно
         public Window_Game() { InitializeComponent(); }
@@ -27,7 +46,13 @@ namespace DoodleJump
             if (!_Player.isAlive)
             {
 
-                Camera.Death(Canvas_GameMap, _Player, Grid_GameOver);
+                _Timer.Stop();
+
+                Window_Gameover window_Gameover = new Window_Gameover(_Player.score);
+
+                window_Gameover.Show();
+
+                this.Close();
 
                 return;
 
@@ -57,9 +82,6 @@ namespace DoodleJump
         private void _StartGame()
         {
 
-            //Скрываем надпись о проигрыше
-            Grid_GameOver.Visibility = Visibility.Hidden;
-
             //Настраиваем таймер на 1 мс
             _Timer = new DispatcherTimer();
 
@@ -69,8 +91,13 @@ namespace DoodleJump
 
             _Timer.Start();
 
+            //Высчитываем центр по иксу
+            double playerX = (Canvas_GameMap.ActualWidth / 2);
+            //Высчитываем нижнюю координату (~ 0.05 высоты окна от низа)
+            double playerY = (Canvas_GameMap.ActualHeight * 0.95);
+
             //Создаем игрока: канвас, скорость, прыжок, локация
-            _Player = new Player(Canvas_GameMap, 10.0, 15.0, new Location(250.0, 650.0));
+            _Player = new Player(Canvas_GameMap, _Width * 0.015, _Height * 0.02, new Location(playerX, playerY));
 
             //Генерируем новые платформы при необходимости
             PlatformGenerator.GenerateNewPlatform(Canvas_GameMap, _Player);
@@ -81,11 +108,15 @@ namespace DoodleJump
         private void _Window_Loaded(object sender, RoutedEventArgs e)
         {
 
+            //Применяем настройки окна по загрузке
+            _AcceptWindowSettings();
+
             //Запускаем игру
             _StartGame();
 
         }
 
+        //Движение игрока
         private void _MovePlayer()
         {
 
@@ -108,19 +139,25 @@ namespace DoodleJump
 
         }
 
+        //Если нажата левая клавиша
         private bool _LeftPress = false;
+
+        //Если нажата правая клавиша
         private bool _RightPress = false;
 
         private void _Window_KeyDown(object sender, KeyEventArgs e)
         {
 
+            //Если нажата клавиша A, то начинаем движение влево
             if(e.Key == Key.A)
             {
 
                 _LeftPress = true;
 
             }
-            if(e.Key == Key.D)
+
+            //Аналогично
+            else if(e.Key == Key.D)
             {
 
                 _RightPress = true;
@@ -132,42 +169,24 @@ namespace DoodleJump
         private void _Window_KeyUp(object sender, KeyEventArgs e)
         {
 
+            //Если отпущена клавиша A, то прекращаем движение влево
             if (e.Key == Key.A)
             {
 
                 _LeftPress = false;
 
             }
-            if (e.Key == Key.D)
+
+            //Аналогично
+            else if (e.Key == Key.D)
             {
 
                 _RightPress = false;
 
             }
 
+            //Говорим, что нужно сбросить скорость до нуля (постепенно)
             _Player.resetVelocity = true;
-
-        }
-
-        private void _Button_PlayAgain_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-
-            //Останавливаем таймер, иначе отсчет времени в игре сломается
-            _Timer.Stop();
-
-            //Запускаем игру снова
-            _StartGame();
-
-        }
-
-        private void _Button_Start_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-
-            MainWindow mainWindow = new MainWindow();
-
-            mainWindow.Show();
-
-            this.Close();
 
         }
 

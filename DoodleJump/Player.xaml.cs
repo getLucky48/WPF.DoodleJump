@@ -28,6 +28,15 @@ namespace DoodleJump
         //Если true - значит, игрок падает, и мы ищем взаимодействие с платформой для следующего прыжка
         private bool _IsFalling;
 
+        //Изменение скорости
+        private double _deltaVelocity;
+
+        //Изменение прыжка
+        private double _deltaJump;
+
+        //Измеднение скорости при отпуске клавиши
+        private double _deltaResetVelocity;
+
         //Если true - начинаем снижение скорости
         public bool resetVelocity;
 
@@ -47,6 +56,10 @@ namespace DoodleJump
 
             _MaxVelocity = tVelocity;
             _MaxJump = tJump;
+
+            _deltaVelocity = _MaxVelocity * 0.3;
+            _deltaJump = _MaxJump * 0.08;
+            _deltaResetVelocity = 0.25;
 
             _CurrentVelocity = 0;
             score = 0;
@@ -103,7 +116,7 @@ namespace DoodleJump
 
             Image_Player.FlowDirection = FlowDirection.RightToLeft;
 
-            if (_CurrentVelocity - 3.0 > -_MaxVelocity) { _CurrentVelocity -= 3.0; }
+            if (_CurrentVelocity - _deltaVelocity > -_MaxVelocity) { _CurrentVelocity -= _deltaVelocity; }
 
         }
 
@@ -113,7 +126,7 @@ namespace DoodleJump
 
             Image_Player.FlowDirection = FlowDirection.LeftToRight;
 
-            if (_CurrentVelocity + 3.0 < _MaxVelocity) { _CurrentVelocity += 3.0; }
+            if (_CurrentVelocity + _deltaVelocity < _MaxVelocity) { _CurrentVelocity += _deltaVelocity; }
 
         }
         
@@ -127,16 +140,16 @@ namespace DoodleJump
 
                 //Если текущая высота прыжка меньше максимальной, то увеличиваем
                 //Иначе, говорим, что игрок достиг максимальной высоты и начинает падать
-                if (_CurrentJump + 1.0 < _MaxJump) { _CurrentJump += 1.0; }
+                if (_CurrentJump + _deltaJump < _MaxJump) { _CurrentJump += _deltaJump; }
                 else { _IsFalling = !_IsFalling; }
 
             }
             //Если игрок падает
             else {
-                
+
                 //Уменьшаем текущую "высоту" прыжка. Может уйти в минус - нормально.
                 //Будет уменьшаться до тех пор, пока не упадет на платформу, иначе - будет бесконечно падать.
-                _CurrentJump -= 1.0;
+                _CurrentJump -= _deltaJump;
 
                 //OnCollisionEnter - мой метод. Проверяет соприкасается ли объект с платформами.
                 //true - если упал на платформу
@@ -164,9 +177,9 @@ namespace DoodleJump
             {
 
                 //По умолчанию я уменьшаю на 0.25. Вдруг, текущая скорость 0.1, то мы в ноль не попадем, поэтому такое ветвление
-                if (_CurrentVelocity > -0.25) { _CurrentVelocity = 0; }
+                if (_CurrentVelocity > -_deltaResetVelocity) { _CurrentVelocity = 0; }
 
-                else { _CurrentVelocity += 0.25; }
+                else { _CurrentVelocity += _deltaResetVelocity; }
 
             }
 
@@ -175,9 +188,9 @@ namespace DoodleJump
             {
 
                 //По умолчанию я уменьшаю на 0.25. Вдруг, текущая скорость 0.1, то мы в ноль не попадем, поэтому такое ветвление
-                if (_CurrentVelocity < 0.25) { _CurrentVelocity = 0; }
+                if (_CurrentVelocity < _deltaResetVelocity) { _CurrentVelocity = 0; }
 
-                else { _CurrentVelocity -= 0.25; }
+                else { _CurrentVelocity -= _deltaResetVelocity; }
 
             }
 
@@ -217,10 +230,10 @@ namespace DoodleJump
                  * 
                 */
 
-                if((Math.Abs(y_OfPlatformLeft - y_OfuiLeft - 50) < 10) && (Math.Abs(y_OfPlatformLeft - y_OfuiLeft- 50) > 0))
+                if((Math.Abs(y_OfPlatformLeft - y_OfuiLeft - this.Height) < 10) && (Math.Abs(y_OfPlatformLeft - y_OfuiLeft - this.Height) > 0))
 
                     if (((x_OfPlatformLeft <= x_OfuiLeft) && (x_OfuiLeft <= x_OfPlatformLeft + target.Width)) ||
-                        ((x_OfPlatformLeft <= x_OfuiLeft + 50) && (x_OfuiLeft + 50 <= x_OfPlatformLeft + target.Width)))
+                        ((x_OfPlatformLeft <= x_OfuiLeft + this.Width) && (x_OfuiLeft + this.Width <= x_OfPlatformLeft + target.Width)))
                     {
 
                         return true;
@@ -237,8 +250,8 @@ namespace DoodleJump
         public void ChangePlayerPosition()
         {
 
-            //Если игрок упал ниже окна (ниже 800 пикселей), то игра окончена
-            if(Location.GetLocation(this).Y > 850)
+            //Если игрок упал ниже окна на 10% от высоты игрового поля, то игра окончена
+            if(Location.GetLocation(this).Y > (_ParentCanvas.ActualHeight * 1.1))
             {
 
                 isAlive = false;
@@ -249,7 +262,7 @@ namespace DoodleJump
             Jump();
 
             //Если игрок отпустил клавишу, то начинаем сброс скорости до нуля
-            if (resetVelocity) ResetVelocity();
+            if (resetVelocity) { ResetVelocity(); }
 
             //Получаем X позиции игрока
             double xPos = (double)this.GetValue(Canvas.LeftProperty) + _CurrentVelocity;
@@ -259,8 +272,8 @@ namespace DoodleJump
 
             //Если игрок выходит за пределы игровой зоны, то его перемещает на противоположную сторону
             //как и в оригинале игры
-            if (xPos < -35) { xPos = 565; }
-            else if (xPos > 565) { xPos = -35; }
+            if (xPos < -(_ParentCanvas.ActualWidth * 0.05) ) { xPos = _ParentCanvas.ActualWidth * 0.95; }
+            else if (xPos > _ParentCanvas.ActualWidth * 0.95) { xPos = -(_ParentCanvas.ActualWidth * 0.05); }
 
             //Устанавливаем позицию игрока по X
             this.SetValue(Canvas.LeftProperty, xPos);

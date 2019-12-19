@@ -1,0 +1,28 @@
+﻿<Window x:Class="DoodleJump.Window_Gameover"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DoodleJump"
+        mc:Ignorable="d"
+        Title="Game over" Height="357" Width="372.5" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
+    <Canvas>
+        <Canvas.Background>
+            <ImageBrush ImageSource="Sprites/Background.jpg">
+                <ImageBrush.RelativeTransform>
+                    <TransformGroup>
+                        <ScaleTransform CenterY="0.5" CenterX="0.5" ScaleX="3" ScaleY="3"/>
+                        <SkewTransform CenterY="0.5" CenterX="0.5"/>
+                        <RotateTransform CenterY="0.5" CenterX="0.5"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </ImageBrush.RelativeTransform>
+            </ImageBrush>
+        </Canvas.Background>
+        <Image Height="77" Canvas.Top="31" Width="346" Canvas.Left="10" Source="Sprites/gameover.png"/>
+        <Label x:Name="Label_Score" Content="Score: 0" Canvas.Left="10" Canvas.Top="113" Height="40" Width="346" HorizontalContentAlignment="Center" FontSize="20"/>
+        <Image x:Name="Button_PlayAgain" Height="37" Canvas.Left="256" Canvas.Top="158" Width="100" Source="Sprites/Button_playAgain.png" PreviewMouseDown="Button_PlayAgain_PreviewMouseDown"/>
+        <Image x:Name="Button_Menu" Height="37" Canvas.Left="256" Canvas.Top="212" Width="100" Source="Sprites/Button_menu.png" PreviewMouseDown="Button_Menu_PreviewMouseDown"/>
+
+    </Canvas>
+</Window>
