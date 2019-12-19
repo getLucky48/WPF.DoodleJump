@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Width="50" Height="50" Foreground="Black">
     <Grid>
-        <Image x:Name="Image_Player" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="50" Source="Sprites/Player.png" OpacityMask="White"/>
+        <Image x:Name="Image_Player" HorizontalAlignment="Left" VerticalAlignment="Top" Source="Sprites/Player.png" OpacityMask="White" Stretch="Fill"/>
 
     </Grid>
 </UserControl>

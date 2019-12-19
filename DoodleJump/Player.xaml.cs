@@ -54,12 +54,13 @@ namespace DoodleJump
         public Player(Canvas tCanvas, double tVelocity, double tJump, Location tLocation)
         {
 
+
             _MaxVelocity = tVelocity;
             _MaxJump = tJump;
 
             _deltaVelocity = _MaxVelocity * 0.3;
             _deltaJump = _MaxJump * 0.08;
-            _deltaResetVelocity = 0.25;
+            _deltaResetVelocity = _MaxVelocity * 0.05;
 
             _CurrentVelocity = 0;
             score = 0;
@@ -255,6 +256,8 @@ namespace DoodleJump
             {
 
                 isAlive = false;
+
+                return;
 
             }
 

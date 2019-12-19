@@ -1,55 +1,55 @@
 ﻿using DoodleJump.Scripts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace DoodleJump
 {
 
-    public partial class Window_GameOver : Window
+    public partial class MainWindow : Window
     {
-        public Window_GameOver()
+
+        //Конструкор класса
+        public MainWindow()
         {
 
+            //Инициализируем компонент
             InitializeComponent();
 
         }
 
+        //Когда окно загружено, вызывается этот метод
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
-            Player player = new Player(Canvas_Launcher, 10.0, 12.5, new Location(35.0, 200.0));
+            //Создаем игрока (для вида в меню)
+            Player player = new Player(Canvas_Launcher, 0.1, 0.1, new Location(35.0, 200.0));
 
         }
 
+        //Если был произведен клик по картинке START, то вызывается этот метод
         private void Button_Start_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
 
+            //Создаем окно с игрой
             Window_Game windowGame = new Window_Game();
 
+            //Открываем окно с игрой
             windowGame.Show();
 
+            //Закрываем текущее окно
             this.Close();
 
         }
 
+        //Если был произведен клик по картинке EXIT, то вызывается этот метод
         private void Button_Exit_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
 
+            //Закрываем текущее окно
             this.Close();
 
         }
+
     }
 
 }

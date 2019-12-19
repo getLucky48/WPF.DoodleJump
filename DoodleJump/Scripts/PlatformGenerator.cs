@@ -24,6 +24,12 @@ namespace DoodleJump.Scripts
                 //Высчитываем нижнюю координату (~ 0.05 высоты окна от низа)
                 double platY = (tCanvas.ActualHeight * 0.95) - (FirtsPlatform.Height / 2);
 
+                //Задаем ширину платформы 10% от ширины окна
+                FirtsPlatform.Width = tCanvas.ActualWidth * 0.1;
+
+                //Задаем высоту платформы 2% от высоты окна
+                FirtsPlatform.Height = tCanvas.ActualHeight * 0.02;
+
                 //Устанавливаем координату X
                 FirtsPlatform.SetValue(Canvas.LeftProperty, platX);
 
@@ -67,6 +73,48 @@ namespace DoodleJump.Scripts
 
         }
 
+        //Метод проверки пересечения новой платформы с последней
+        public static bool OnCollisionEnter(Canvas tCanvas, Platform tPlatform)
+        {
+
+            //Получаем последнюю платформу
+            Platform lastPlatform = tCanvas.Children.OfType<Platform>().First();
+
+            //Получаем координаты левого верхнего угла последней платформы
+            double x1_lastPlatform = Location.GetLocation(lastPlatform).X;
+            double y1_lastPlatform = Location.GetLocation(lastPlatform).Y;
+
+            //Получаем координаты правого нижнего угла последней платформы
+            double x2_lastPlatform = x1_lastPlatform + lastPlatform.Width;
+            double y2_lastPlatform = y1_lastPlatform + lastPlatform.Height;
+
+            //Получаем координаты левого верхнего угла новой платформы
+            double x1_newPlatform = Location.GetLocation(tPlatform).X;
+            double y1_newPlatform = Location.GetLocation(tPlatform).Y;
+
+            //Получаем координаты правого нижнего угла новой платформы
+            double x2_newPlatform = x1_newPlatform + tPlatform.Width;
+            double y2_newPlatform = y1_newPlatform + tPlatform.Height;
+
+            //Если левый верхний угол новой платформы заходит в зону последней платформы
+            if((x1_lastPlatform <= x1_newPlatform) 
+                && (y1_lastPlatform <= y1_newPlatform)
+                && (x1_newPlatform <= x2_lastPlatform) 
+                && (y1_newPlatform <= y2_lastPlatform))
+            { return true; }
+
+            //Если правый нижний угол новой платформы заходит в зону последней платформы
+            if ((x1_lastPlatform <= x2_newPlatform)
+                && (y1_lastPlatform <= y2_newPlatform)
+                && (x2_newPlatform <= x2_lastPlatform)
+                && (y2_newPlatform <= y2_lastPlatform))
+            { return true; }
+
+            //Если пересечений нет
+            return false;
+
+        }
+
         //Генерирует 20 следующих платформ
         public static void GenerateNewPlatform(Canvas tCanvas, Player player)
         {
@@ -90,18 +138,37 @@ namespace DoodleJump.Scripts
             for(int i = 0; i < 20; i++)
             {
 
+                //Создаем новую платформу
                 Platform newPlatform = new Platform();
 
-                //Рассчитываем расстояние до следующей платформы
-                double yNext = locLastPlatform.Y - (rand.NextDouble() * player.GetMaxJump() * 6);
+                //Отступ от краев окна
+                double border = tCanvas.ActualWidth * 0.015;
+                
+                //Задаем ширину платформы 10% от ширины окна
+                newPlatform.Width = tCanvas.ActualWidth * 0.1;
 
-                double border = 10.0;
+                //Задаем высоту платформы 2% от высоты окна
+                newPlatform.Height = tCanvas.ActualHeight * 0.02;
 
-                //Задаем Y координату для новой платформы
-                newPlatform.SetValue(Canvas.TopProperty, yNext);
+                //Расчитывает координаты до тех пор, пока не найдет свободное место
+                //То есть исключает пересечение платформ
+                do
+                {
 
-                //Задаем X координату для новой платформы
-                newPlatform.SetValue(Canvas.LeftProperty, border + (rand.Next() % ((tCanvas.ActualWidth - border) - newPlatform.Width)));
+                    //Рассчитываем расстояние до следующей платформы
+                    double xNext = border + (rand.Next() % ((tCanvas.ActualWidth - border) - newPlatform.Width));
+
+                    //Рассчитываем расстояние до следующей платформы
+                    double yNext = locLastPlatform.Y - (rand.NextDouble() * player.GetMaxJump() * 6);
+
+                    //Задаем X координату для новой платформы
+                    newPlatform.SetValue(Canvas.LeftProperty, xNext);
+
+                    //Задаем Y координату для новой платформы
+                    newPlatform.SetValue(Canvas.TopProperty, yNext);
+
+                }
+                while (OnCollisionEnter(tCanvas, newPlatform));
 
                 //Добавляем новую платформу в игровую зону
                 tCanvas.Children.Insert(0, newPlatform);
