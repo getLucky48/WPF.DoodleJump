@@ -1,7 +1,6 @@
 C:\Users\1162262\source\repos\DoodleJump\DoodleJump\bin\Debug\DoodleJump.exe.config
 C:\Users\1162262\source\repos\DoodleJump\DoodleJump\bin\Debug\DoodleJump.exe
 C:\Users\1162262\source\repos\DoodleJump\DoodleJump\bin\Debug\DoodleJump.pdb
-C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\DoodleJump.csprojAssemblyReference.cache
 C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\App.g.cs
 C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\DoodleJump_MarkupCompile.cache
 C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\DoodleJump_MarkupCompile.lref
@@ -22,3 +21,4 @@ C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\Platform.baml
 C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\Player.baml
 C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\Window_Gameover.g.cs
 C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\Window_Gameover.baml
+C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\DoodleJump.csprojAssemblyReference.cache

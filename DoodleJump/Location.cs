@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace DoodleJump.Scripts
+namespace DoodleJump
 {
     public class Location
     {
@@ -33,4 +33,5 @@ namespace DoodleJump.Scripts
         }
 
     }
+
 }

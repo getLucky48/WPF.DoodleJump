@@ -58,9 +58,9 @@
     <Compile Include="Platform.xaml.cs">
       <DependentUpon>Platform.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Scripts\Camera.cs" />
-    <Compile Include="Scripts\PlatformGenerator.cs" />
-    <Compile Include="Scripts\Location.cs" />
+    <Compile Include="Camera.cs" />
+    <Compile Include="PlatformGenerator.cs" />
+    <Compile Include="Location.cs" />
     <Compile Include="Player.xaml.cs">
       <DependentUpon>Player.xaml</DependentUpon>
     </Compile>
@@ -146,5 +146,13 @@
   <ItemGroup>
     <Resource Include="Sprites\gameover.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Sprites\PlatformMoving.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Sprites\PlatformBroken_1.png" />
+    <Resource Include="Sprites\PlatformBroken_2.png" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,6 +1,6 @@
-﻿using DoodleJump.Scripts;
-using System;
+﻿using System;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -10,17 +10,20 @@ namespace DoodleJump
     public partial class Player : UserControl
     {
 
+        //Максимальная высота прыжка
+        private static double _MaxJump;
+
         //Максимальная скорость игрока по сторонам
         private double _MaxVelocity;
 
         //Текущая скорость игрока по сторонам. Нужно для плавного передвижения
         private double _CurrentVelocity;
 
-        //Максимальная высота прыжка
-        private double _MaxJump;
+        //Максимальная скорость прыжка
+        private double _MaxVelocityJump;
 
-        //Текущая высота прыжка. Нужно для плавного подъема и спуска
-        private double _CurrentJump;
+        //Текущая скорость прыжка. Нужно для плавного подъема и спуска
+        private double _CurrentVelocityJump;
 
         //Канвас - на чем рисуем и размещаем объекты. Необходимо для проверки координат платформ
         private Canvas _ParentCanvas;
@@ -31,8 +34,8 @@ namespace DoodleJump
         //Изменение скорости
         private double _deltaVelocity;
 
-        //Изменение прыжка
-        private double _deltaJump;
+        //Изменение скорости прыжка
+        private double _deltaVelocityJump;
 
         //Измеднение скорости при отпуске клавиши
         private double _deltaResetVelocity;
@@ -47,7 +50,7 @@ namespace DoodleJump
         public long score;
 
         //Возвращает максимальную высоту прыжка
-        public double GetMaxJump() { return _MaxJump; }
+        public static double GetMaxJump() { return _MaxJump; }
 
         //Конструктор класса. Создаем игрока, задаем канвас для размещения картинки, макс. скорость, макс. прыжок и локацию
         //Location - мой класс, хранит два double-значения X, Y и парочку методов
@@ -56,10 +59,10 @@ namespace DoodleJump
 
 
             _MaxVelocity = tVelocity;
-            _MaxJump = tJump;
+            _MaxVelocityJump = tJump;
 
             _deltaVelocity = _MaxVelocity * 0.3;
-            _deltaJump = _MaxJump * 0.08;
+            _deltaVelocityJump = _MaxVelocityJump * 0.08;
             _deltaResetVelocity = _MaxVelocity * 0.05;
 
             _CurrentVelocity = 0;
@@ -76,6 +79,36 @@ namespace DoodleJump
             _IsFalling = false;
             resetVelocity = false;
             isAlive = true;
+
+            //Сымитируем прыжок игрока и высчитаем его максимальную высоту
+            double temp_currentVelocityJump = 0;
+
+            //Максимальная высота прыжка
+            _MaxJump = 0;
+
+            //Пока не достигнута максимальная скорость
+            while(temp_currentVelocityJump < _MaxVelocityJump)
+            {
+
+                //Прибавляем скорость
+                temp_currentVelocityJump += _deltaVelocityJump;
+
+                //Прибавляем текущую скорость
+                _MaxJump += temp_currentVelocityJump;
+
+            }
+
+            //Когда достигнут максимум скорости, то она начинает падать
+            while(temp_currentVelocityJump > 0)
+            {
+
+                //Уменьшаем скорость
+                temp_currentVelocityJump -= _deltaVelocityJump;
+
+                //Прибавляем текущую скорость
+                _MaxJump += temp_currentVelocityJump;
+
+            }
 
             //Инициализируем компонент. Без него ничего не работает. Это стандартный метод для любого элемента.
             InitializeComponent();
@@ -135,32 +168,32 @@ namespace DoodleJump
         public void Jump()
         {
 
-            //Если игрок не падает, значит двигается вверх
-            if (!_IsFalling && isAlive)
+            //Если игрок не падает
+            if (!_IsFalling)
             {
 
-                //Если текущая высота прыжка меньше максимальной, то увеличиваем
-                //Иначе, говорим, что игрок достиг максимальной высоты и начинает падать
-                if (_CurrentJump + _deltaJump < _MaxJump) { _CurrentJump += _deltaJump; }
+                //Если текущая скорость прыжка меньше максимальной, то увеличиваем
+                //Иначе, говорим, что игрок достиг максимальной скорости и начинает сбавлять ее, а затем падать
+                if (_CurrentVelocityJump + _deltaVelocityJump < _MaxVelocityJump) { _CurrentVelocityJump += _deltaVelocityJump; }
                 else { _IsFalling = !_IsFalling; }
 
             }
-            //Если игрок падает
+            //Если игрок падает, то он уменьшает скорость прыжка
             else {
 
-                //Уменьшаем текущую "высоту" прыжка. Может уйти в минус - нормально.
-                //Будет уменьшаться до тех пор, пока не упадет на платформу, иначе - будет бесконечно падать.
-                _CurrentJump -= _deltaJump;
+                //Уменьшаем скорость прыжка. Если < 0, значит он уже падает, а не сбавляет скорость
+                _CurrentVelocityJump -= _deltaVelocityJump;
 
                 //OnCollisionEnter - мой метод. Проверяет соприкасается ли объект с платформами.
                 //true - если упал на платформу
-                if (OnCollisionEnter(this))
+                //Если игрок падает и касается платформы, то нужно от нее оттолкнуться
+                if ((_CurrentVelocityJump < 0) && OnCollisionEnter(this))
                 {
 
-                    //Если упал на платформу, то текущая высота прыжка равна нулю и персонаж на какой-то момент остановится
-                    _CurrentJump = 0.0;
+                    //Ставит скорость в ноль, т.к. было соприкосновение с платформой
+                    _CurrentVelocityJump = 0.0;
 
-                    //Если упал на платформу, значит уже не падает :D
+                    //Если упал на платформу, значит уже не падает
                     _IsFalling = !_IsFalling;
 
                 }
@@ -203,8 +236,10 @@ namespace DoodleJump
 
             //Получаем список всех дочерних элементов канваса - платформы
             //Затем перебираем в foreach
-            foreach(var target in _ParentCanvas.Children.OfType<Platform>())
+            for(int i = 0; i < _ParentCanvas.Children.OfType<Platform>().ToArray().Length; i++)
             {
+
+                var target = _ParentCanvas.Children.OfType<Platform>().ElementAt(i);
 
                 //Координаты платформы
                 double x_OfPlatformLeft = (double)Location.GetLocation(target).X;
@@ -231,11 +266,20 @@ namespace DoodleJump
                  * 
                 */
 
-                if((Math.Abs(y_OfPlatformLeft - y_OfuiLeft - this.Height) < 10) && (Math.Abs(y_OfPlatformLeft - y_OfuiLeft - this.Height) > 0))
+                if((Math.Abs(y_OfPlatformLeft - y_OfuiLeft - this.Height) < target.Height) && (Math.Abs(y_OfPlatformLeft - y_OfuiLeft - this.Height) > 0))
 
                     if (((x_OfPlatformLeft <= x_OfuiLeft) && (x_OfuiLeft <= x_OfPlatformLeft + target.Width)) ||
                         ((x_OfPlatformLeft <= x_OfuiLeft + this.Width) && (x_OfuiLeft + this.Width <= x_OfPlatformLeft + target.Width)))
                     {
+
+                        if (target.GetTypePlatform().Contains("PlatformBroken"))
+                        {
+
+                            target.BreakPlatformAsync();
+
+                            return false;
+
+                        }
 
                         return true;
 
@@ -271,7 +315,7 @@ namespace DoodleJump
             double xPos = (double)this.GetValue(Canvas.LeftProperty) + _CurrentVelocity;
 
             //Получаем Y позиции игрока
-            double yPos = (double)this.GetValue(Canvas.TopProperty) - _CurrentJump;
+            double yPos = (double)this.GetValue(Canvas.TopProperty) - _CurrentVelocityJump;
 
             //Если игрок выходит за пределы игровой зоны, то его перемещает на противоположную сторону
             //как и в оригинале игры

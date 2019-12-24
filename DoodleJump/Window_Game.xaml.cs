@@ -1,5 +1,4 @@
-﻿using DoodleJump.Scripts;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -11,10 +10,10 @@ namespace DoodleJump
     {
 
         //Ширина окна с игрой равна 30% от ширины разрешения экрана
-        private double _Width = SystemParameters.PrimaryScreenWidth * 0.3 /2;
+        private double _Width = SystemParameters.PrimaryScreenWidth * 0.3;
 
         //Высота окна с игрой равна 70% от высоты разрешения экрана
-        private double _Height = SystemParameters.PrimaryScreenHeight * 0.7 /2;
+        private double _Height = SystemParameters.PrimaryScreenHeight * 0.7;
 
         //Применить настройки к окну
         private void _AcceptWindowSettings()

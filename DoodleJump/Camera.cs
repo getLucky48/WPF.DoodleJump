@@ -1,8 +1,7 @@
 ﻿using System.Linq;
-using System.Windows;
 using System.Windows.Controls;
 
-namespace DoodleJump.Scripts
+namespace DoodleJump
 {
     class Camera
     {

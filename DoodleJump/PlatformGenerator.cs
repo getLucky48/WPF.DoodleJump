@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Linq;
-using System.Windows;
 using System.Windows.Controls;
 
-namespace DoodleJump.Scripts
+namespace DoodleJump
 {
     class PlatformGenerator
     {
+
+        private static string[] _TypeOfPlatform = { "Platform", "PlatformBroken_1", "PlatformMoving" };
 
         //Метод для проверки на необходимость новых платформ
         private static bool _NeedNewPlatforms(Canvas tCanvas, Player player)
@@ -16,28 +17,31 @@ namespace DoodleJump.Scripts
             if(tCanvas.Children.OfType<Platform>().Count() == 0)
             {
 
-                Platform FirtsPlatform = new Platform();
+                Platform FirstPlatform = new Platform("Platform", tCanvas);
 
                 //Высчитываем центр по иксу
-                double platX = (tCanvas.ActualWidth / 2) - (FirtsPlatform.Width / 2);
+                double platX = (tCanvas.ActualWidth / 2) - (FirstPlatform.Width / 2);
 
                 //Высчитываем нижнюю координату (~ 0.05 высоты окна от низа)
-                double platY = (tCanvas.ActualHeight * 0.95) - (FirtsPlatform.Height / 2);
+                double platY = (tCanvas.ActualHeight * 0.95) - (FirstPlatform.Height / 2);
 
                 //Задаем ширину платформы 10% от ширины окна
-                FirtsPlatform.Width = tCanvas.ActualWidth * 0.1;
+                FirstPlatform.Width = tCanvas.ActualWidth * 0.1;
 
                 //Задаем высоту платформы 2% от высоты окна
-                FirtsPlatform.Height = tCanvas.ActualHeight * 0.02;
+                FirstPlatform.Height = tCanvas.ActualHeight * 0.02;
 
                 //Устанавливаем координату X
-                FirtsPlatform.SetValue(Canvas.LeftProperty, platX);
+                FirstPlatform.SetValue(Canvas.LeftProperty, platX);
 
                 //Устанавливаем координату Y
-                FirtsPlatform.SetValue(Canvas.TopProperty, platY);
+                FirstPlatform.SetValue(Canvas.TopProperty, platY);
 
                 //Вставляем элемент на игровое поле
-                tCanvas.Children.Insert(0, FirtsPlatform);
+                tCanvas.Children.Insert(0, FirstPlatform);
+
+                //Расчитываем точки платформы
+                FirstPlatform.SetLocation();
 
             }
 
@@ -62,7 +66,7 @@ namespace DoodleJump.Scripts
             {
 
                 //Если текущий элемент ниже окна на 5% от высоты игрового поля, то удалить
-                if(Location.GetLocation(tCanvas.Children.OfType<Platform>().ElementAt(i)).Y > (tCanvas.ActualHeight * 1.05))
+                if(tCanvas.Children.OfType<Platform>().ElementAt(i).LeftUpPoint.Y > (tCanvas.ActualHeight * 1.05))
                 {
 
                     tCanvas.Children.Remove(tCanvas.Children.OfType<Platform>().ElementAt(i));
@@ -73,42 +77,58 @@ namespace DoodleJump.Scripts
 
         }
 
-        //Метод проверки пересечения новой платформы с последней
-        public static bool OnCollisionEnter(Canvas tCanvas, Platform tPlatform)
+        //Получаем тип платформы с определенным шансом
+        private static string _GetTypeWithChance(int tChance)
         {
 
-            //Получаем последнюю платформу
-            Platform lastPlatform = tCanvas.Children.OfType<Platform>().First();
+            tChance = tChance % 100;
 
-            //Получаем координаты левого верхнего угла последней платформы
-            double x1_lastPlatform = Location.GetLocation(lastPlatform).X;
-            double y1_lastPlatform = Location.GetLocation(lastPlatform).Y;
+            if ((0 <= tChance) && (tChance <= 20)) { return "PlatformMoving"; }
 
-            //Получаем координаты правого нижнего угла последней платформы
-            double x2_lastPlatform = x1_lastPlatform + lastPlatform.Width;
-            double y2_lastPlatform = y1_lastPlatform + lastPlatform.Height;
+            if ((21 <= tChance) && (tChance <= 50)) { return "PlatformBroken_1"; }
 
-            //Получаем координаты левого верхнего угла новой платформы
-            double x1_newPlatform = Location.GetLocation(tPlatform).X;
-            double y1_newPlatform = Location.GetLocation(tPlatform).Y;
+            if ((51 <= tChance) && (tChance < 100)) { return "Platform"; }
 
-            //Получаем координаты правого нижнего угла новой платформы
-            double x2_newPlatform = x1_newPlatform + tPlatform.Width;
-            double y2_newPlatform = y1_newPlatform + tPlatform.Height;
+            return "";
 
-            //Если левый верхний угол новой платформы заходит в зону последней платформы
-            if((x1_lastPlatform <= x1_newPlatform) 
-                && (y1_lastPlatform <= y1_newPlatform)
-                && (x1_newPlatform <= x2_lastPlatform) 
-                && (y1_newPlatform <= y2_lastPlatform))
-            { return true; }
+        }
 
-            //Если правый нижний угол новой платформы заходит в зону последней платформы
-            if ((x1_lastPlatform <= x2_newPlatform)
-                && (y1_lastPlatform <= y2_newPlatform)
-                && (x2_newPlatform <= x2_lastPlatform)
-                && (y2_newPlatform <= y2_lastPlatform))
-            { return true; }
+        //Проверяем вхождение точки в прямоугольную зону
+        public static bool PointEnter(Location tLocation, Platform tPlatform)
+        {
+
+            //Если точка находится в границах по X
+            if((tPlatform.LeftUpPoint.X <= tLocation.X) && (tLocation.X <= tPlatform.RightUpPoint.X))
+            {
+                
+                //Если точка находится в границах по Y
+                if ((tPlatform.LeftUpPoint.Y <= tLocation.Y) && (tLocation.Y <= tPlatform.LeftDownPoint.Y))
+                {
+
+                    return true;
+
+                }
+
+                return false;
+
+            }
+
+            return false;
+
+        }
+
+        //Метод проверки пересечения новой платформы с последней
+        public static bool OnCollisionEnter(Platform lastPlatform, Platform tPlatform)
+        {
+
+            //Если хоть одна точка платформы входит в другую, то есть пересечение
+            if (PointEnter(tPlatform.LeftUpPoint, lastPlatform)) { return true; }
+
+            if (PointEnter(tPlatform.LeftDownPoint, lastPlatform)) { return true; }
+
+            if (PointEnter(tPlatform.RightUpPoint, lastPlatform)) { return true; }
+
+            if (PointEnter(tPlatform.RightDownPoint, lastPlatform)) { return true; }
 
             //Если пересечений нет
             return false;
@@ -128,18 +148,22 @@ namespace DoodleJump.Scripts
             //Получаем самую последнюю созданную платформу. Хоть и написано First, но вернет последнюю, т.к. в списке
             //она будет в самом начале
             Platform lastPlatform = tCanvas.Children.OfType<Platform>().First();
-
+            
             //Получаем координаты последней платформы
             Location locLastPlatform = Location.GetLocation(lastPlatform);
 
             //Класс рандомных чисел
             Random rand = new Random();
 
-            for(int i = 0; i < 20; i++)
+            //Массив под 20 новых платформ
+            Platform[] platforms = new Platform[20];
+
+            //Выстраиваем список следующих платформ. Не добавляем на форму без проверки!
+            for (int i = 0; i < 20; i++)
             {
 
-                //Создаем новую платформу
-                Platform newPlatform = new Platform();
+                //Создаем новую платформу. Если заданной платформы не существует, то создается обычная
+                Platform newPlatform = new Platform(_GetTypeWithChance(rand.Next()), tCanvas);
 
                 //Отступ от краев окна
                 double border = tCanvas.ActualWidth * 0.015;
@@ -159,7 +183,7 @@ namespace DoodleJump.Scripts
                     double xNext = border + (rand.Next() % ((tCanvas.ActualWidth - border) - newPlatform.Width));
 
                     //Рассчитываем расстояние до следующей платформы
-                    double yNext = locLastPlatform.Y - (rand.NextDouble() * player.GetMaxJump() * 6);
+                    double yNext = locLastPlatform.Y - (rand.NextDouble() / 2 * Player.GetMaxJump());
 
                     //Задаем X координату для новой платформы
                     newPlatform.SetValue(Canvas.LeftProperty, xNext);
@@ -167,14 +191,28 @@ namespace DoodleJump.Scripts
                     //Задаем Y координату для новой платформы
                     newPlatform.SetValue(Canvas.TopProperty, yNext);
 
-                }
-                while (OnCollisionEnter(tCanvas, newPlatform));
+                    //Расчитываем точки платформы
+                    newPlatform.SetLocation();
 
-                //Добавляем новую платформу в игровую зону
-                tCanvas.Children.Insert(0, newPlatform);
+                }
+                while (OnCollisionEnter(lastPlatform, newPlatform));
+
+                //Добавляем новую платформу в массив новых платформ
+                platforms[i] = newPlatform;
+
+                //Теперь последней платформой станет та, что мы только что сделали
+                lastPlatform = newPlatform;
 
                 //Теперь последней платформой станет та, что мы только что сделали
                 locLastPlatform = Location.GetLocation(newPlatform);
+
+            }
+
+            //Добавляем 20 новых платформ на игровое поле
+            for(int i = 0; i < 20; i++)
+            {
+
+                tCanvas.Children.Insert(0, platforms[i]);
 
             }
 
