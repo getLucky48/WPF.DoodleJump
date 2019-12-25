@@ -22,3 +22,5 @@ C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\Player.baml
 C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\Window_Gameover.g.cs
 C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\Window_Gameover.baml
 C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\DoodleJump.csprojAssemblyReference.cache
+C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\Enemy.g.cs
+C:\Users\1162262\source\repos\DoodleJump\DoodleJump\obj\Debug\Enemy.baml

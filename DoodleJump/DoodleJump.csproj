@@ -55,11 +55,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Enemy.xaml.cs">
+      <DependentUpon>Enemy.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Platform.xaml.cs">
       <DependentUpon>Platform.xaml</DependentUpon>
     </Compile>
     <Compile Include="Camera.cs" />
-    <Compile Include="PlatformGenerator.cs" />
+    <Compile Include="LevelGenerator.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="Player.xaml.cs">
       <DependentUpon>Player.xaml</DependentUpon>
@@ -70,6 +73,10 @@
     <Compile Include="Window_Gameover.xaml.cs">
       <DependentUpon>Window_Gameover.xaml</DependentUpon>
     </Compile>
+    <Page Include="Enemy.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -153,6 +160,8 @@
     <Resource Include="Sprites\PlatformBroken_1.png" />
     <Resource Include="Sprites\PlatformBroken_2.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Sprites\Enemy_Blue.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
