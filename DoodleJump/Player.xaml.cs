@@ -205,15 +205,17 @@ namespace DoodleJump
 
         }
         
-        public void OnCollisionEnterEnemy()
+        public bool OnCollisionEnterEnemy()
         {
 
             foreach(var target in _ParentCanvas.Children.OfType<Enemy>())
             {
 
-                if (target.OnCollisionEnter(this)) { this.isAlive = false; }
+                if (target.OnCollisionEnter(this)) { return true; }
 
             }
+
+            return false;
 
         }
 
@@ -284,7 +286,14 @@ namespace DoodleJump
 
             }
 
-            OnCollisionEnterEnemy();
+            if (OnCollisionEnterEnemy())
+            {
+
+                isAlive = false;
+
+                return;
+
+            }
 
             Jump();
 

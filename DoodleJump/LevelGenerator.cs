@@ -145,7 +145,7 @@ namespace DoodleJump
                 }
                 while (OnCollisionEnter(lastPlatform, newPlatform));
 
-                if(rand.Next() % 100 <= 5) { SpawnEnemy(tCanvas); }
+                if(rand.Next() % 100 <= 2) { SpawnEnemy(tCanvas); }
 
                 platforms[i] = newPlatform;
                 
