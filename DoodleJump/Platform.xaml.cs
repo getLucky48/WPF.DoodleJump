@@ -12,7 +12,7 @@ namespace DoodleJump
     public partial class Platform : UserControl
     {
 
-        private Canvas _Canvas;
+        public Canvas _Canvas;
 
         public Location LeftUpPoint;
 
@@ -29,38 +29,38 @@ namespace DoodleJump
 
             SetTypePlatform(tType);
 
-            _MovingLeft = false;
+            MovingLeft = false;
 
-            _deltaVelocity = 1.0;
+            deltaVelocity = 1.0;
 
             _Canvas = tCanvas;
 
         }
 
-        private string _Type;
+        public string Type;
 
-        private bool _MovingLeft;
+        public bool MovingLeft;
 
-        private double _deltaVelocity;
+        public double deltaVelocity;
 
-        private DispatcherTimer _Timer;
+        public DispatcherTimer Timer;
 
         public void SetTypePlatform(string tType)
         {
             
-            if(_Type == null) { _Type = "Platform"; }
+            if(Type == null) { Type = "Platform"; }
 
-            string NewImage = Image_Platform.Source.ToString().Replace(_Type, tType);
+            string NewImage = Image_Platform.Source.ToString().Replace(Type, tType);
 
             try { Image_Platform.Source = new BitmapImage(new Uri(NewImage)); }
 
             catch (IOException) { return; };
 
-            _Type = tType;
+            Type = tType;
 
         }
 
-        public string GetTypePlatform() { return _Type; }
+        public string GetTypePlatform() { return Type; }
 
         public void UpdateLocation()
         {
@@ -78,33 +78,33 @@ namespace DoodleJump
         private void _UserControl_Loaded(object sender, RoutedEventArgs e)
         {
 
-            if (_Type.Contains("PlatformMoving"))
+            if (Type.Contains("PlatformMoving"))
             {
 
-                _Timer = new DispatcherTimer();
+                Timer = new DispatcherTimer();
 
-                _Timer.Tick += new EventHandler(_MovePlatform);
+                Timer.Tick += new EventHandler(MovePlatform);
 
-                _Timer.Interval = new TimeSpan(0, 0, 0, 0, 10);
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 10);
 
-                _Timer.Start();
+                Timer.Start();
 
             }
 
         }
 
-        private void _MovePlatform(object sender, EventArgs e)
+        public void MovePlatform(object sender, EventArgs e)
         {
 
-            if (_MovingLeft)
+            if (MovingLeft)
             {
 
-                if (LeftUpPoint.X < _Canvas.ActualWidth * 0.05) { _MovingLeft = !_MovingLeft; }
+                if (LeftUpPoint.X < _Canvas.ActualWidth * 0.05) { MovingLeft = !MovingLeft; }
 
                 else
                 {
 
-                    this.SetValue(Canvas.LeftProperty, (double)this.GetValue(Canvas.LeftProperty) - _deltaVelocity);
+                    this.SetValue(Canvas.LeftProperty, (double)this.GetValue(Canvas.LeftProperty) - deltaVelocity);
 
                 }
 
@@ -113,12 +113,12 @@ namespace DoodleJump
             else
             {
 
-                if (RightUpPoint.X > _Canvas.ActualWidth * 0.95) { _MovingLeft = !_MovingLeft; }
+                if (RightUpPoint.X > _Canvas.ActualWidth * 0.95) { MovingLeft = !MovingLeft; }
 
                 else
                 {
 
-                    this.SetValue(Canvas.LeftProperty, (double)this.GetValue(Canvas.LeftProperty) + _deltaVelocity);
+                    this.SetValue(Canvas.LeftProperty, (double)this.GetValue(Canvas.LeftProperty) + deltaVelocity);
 
                 }
 
@@ -131,10 +131,10 @@ namespace DoodleJump
         public async Task BreakPlatformAsync()
         {
 
-            if (_Type.Contains("PlatformBroken_1"))
+            if (Type.Contains("PlatformBroken_1"))
             {
 
-                string NewImage = Image_Platform.Source.ToString().Replace(_Type, "PlatformBroken_2");
+                string NewImage = Image_Platform.Source.ToString().Replace(Type, "PlatformBroken_2");
 
                 Image_Platform.Source = new BitmapImage(new Uri(NewImage));
 

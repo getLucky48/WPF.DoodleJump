@@ -16,25 +16,25 @@ namespace DoodleJump
 
         public Location RightDownPoint;
 
-        private static double _MaxJump;
+        public static double MaxJump;
 
-        private double _MaxVelocity;
+        public double MaxVelocity;
 
-        private static double _CurrentVelocity;
+        public static double CurrentVelocity;
 
-        private static double _MaxVelocityJump;
+        public static double MaxVelocityJump;
 
-        private double _CurrentVelocityJump;
+        public double CurrentVelocityJump;
 
-        private Canvas _ParentCanvas;
+        public Canvas canvas;
 
-        private bool _IsFalling;
+        public bool IsFalling;
 
-        private double _deltaVelocity;
+        public double deltaVelocity;
 
-        private static double _deltaVelocityJump;
+        public static double deltaVelocityJump;
 
-        private double _deltaResetVelocity;
+        public double deltaResetVelocity;
 
         public bool resetVelocity;
 
@@ -55,7 +55,7 @@ namespace DoodleJump
 
         }
 
-        public static double GetMaxJump() { return _MaxJump; }
+        public static double GetMaxJump() { return MaxJump; }
 
         public static double CalcMaxJump()
         {
@@ -64,10 +64,10 @@ namespace DoodleJump
 
             double tempMaxJump = 0;
 
-            while (tempCurrentVelocityJump < _MaxVelocityJump)
+            while (tempCurrentVelocityJump < MaxVelocityJump)
             {
 
-                tempCurrentVelocityJump += _deltaVelocityJump;
+                tempCurrentVelocityJump += deltaVelocityJump;
 
                 tempMaxJump += tempCurrentVelocityJump;
 
@@ -76,7 +76,7 @@ namespace DoodleJump
             while (tempCurrentVelocityJump > 0)
             {
 
-                tempCurrentVelocityJump -= _deltaVelocityJump;
+                tempCurrentVelocityJump -= deltaVelocityJump;
 
                 tempMaxJump += tempCurrentVelocityJump;
 
@@ -89,33 +89,33 @@ namespace DoodleJump
         public Player(Canvas tCanvas, double tVelocity, double tJump, Location tLocation)
         {
 
-            _MaxVelocity = tVelocity;
+            MaxVelocity = tVelocity;
 
-            _MaxVelocityJump = tJump;
+            MaxVelocityJump = tJump;
 
-            _deltaVelocity = _MaxVelocity * 0.3;
+            deltaVelocity = MaxVelocity * 0.3;
 
-            _deltaVelocityJump = _MaxVelocityJump * 0.08;
+            deltaVelocityJump = MaxVelocityJump * 0.08;
 
-            _deltaResetVelocity = _MaxVelocity * 0.05;
+            deltaResetVelocity = MaxVelocity * 0.05;
 
-            _CurrentVelocity = 0;
+            CurrentVelocity = 0;
 
             score = 0;
 
-            _ParentCanvas = tCanvas;
+            canvas = tCanvas;
 
-            _ParentCanvas.Children.Insert(0, this);
+            canvas.Children.Insert(0, this);
 
             SetLocation(tLocation);
 
-            _IsFalling = false;
+            IsFalling = false;
 
             resetVelocity = false;
 
             isAlive = true;
 
-            _MaxJump = CalcMaxJump();
+            MaxJump = CalcMaxJump();
 
             InitializeComponent();
 
@@ -139,7 +139,7 @@ namespace DoodleJump
 
             Image_Player.FlowDirection = FlowDirection.RightToLeft;
 
-            if (_CurrentVelocity - _deltaVelocity > -_MaxVelocity) { _CurrentVelocity -= _deltaVelocity; }
+            if (CurrentVelocity - deltaVelocity > -MaxVelocity) { CurrentVelocity -= deltaVelocity; }
 
         }
 
@@ -148,31 +148,31 @@ namespace DoodleJump
 
             Image_Player.FlowDirection = FlowDirection.LeftToRight;
 
-            if (_CurrentVelocity + _deltaVelocity < _MaxVelocity) { _CurrentVelocity += _deltaVelocity; }
+            if (CurrentVelocity + deltaVelocity < MaxVelocity) { CurrentVelocity += deltaVelocity; }
 
         }
         
         public void Jump()
         {
 
-            if (!_IsFalling)
+            if (!IsFalling)
             {
 
-                if (_CurrentVelocityJump + _deltaVelocityJump < _MaxVelocityJump) { _CurrentVelocityJump += _deltaVelocityJump; }
+                if (CurrentVelocityJump + deltaVelocityJump < MaxVelocityJump) { CurrentVelocityJump += deltaVelocityJump; }
 
-                else { _IsFalling = !_IsFalling; }
+                else { IsFalling = !IsFalling; }
 
             }
             else {
 
-                _CurrentVelocityJump -= _deltaVelocityJump;
+                CurrentVelocityJump -= deltaVelocityJump;
 
-                if ((_CurrentVelocityJump <= 0) && OnCollisionEnter())
+                if ((CurrentVelocityJump <= 0) && OnCollisionEnter())
                 {
                     
-                    _CurrentVelocityJump = 0.0;
+                    CurrentVelocityJump = 0.0;
 
-                    _IsFalling = !_IsFalling;
+                    IsFalling = !IsFalling;
 
                 }
 
@@ -185,21 +185,21 @@ namespace DoodleJump
 
             if(!resetVelocity) { return; }
 
-            if (_CurrentVelocity < 0)
+            if (CurrentVelocity < 0)
             {
 
-                if (_CurrentVelocity > -_deltaResetVelocity) { _CurrentVelocity = 0; }
+                if (CurrentVelocity > -deltaResetVelocity) { CurrentVelocity = 0; }
 
-                else { _CurrentVelocity += _deltaResetVelocity; }
+                else { CurrentVelocity += deltaResetVelocity; }
 
             }
 
-            else if (_CurrentVelocity > 0)
+            else if (CurrentVelocity > 0)
             {
 
-                if (_CurrentVelocity < _deltaResetVelocity) { _CurrentVelocity = 0; }
+                if (CurrentVelocity < deltaResetVelocity) { CurrentVelocity = 0; }
 
-                else { _CurrentVelocity -= _deltaResetVelocity; }
+                else { CurrentVelocity -= deltaResetVelocity; }
 
             }
 
@@ -208,7 +208,7 @@ namespace DoodleJump
         public bool OnCollisionEnterEnemy()
         {
 
-            foreach(var target in _ParentCanvas.Children.OfType<Enemy>())
+            foreach(var target in canvas.Children.OfType<Enemy>())
             {
 
                 if (target.OnCollisionEnter(this)) { return true; }
@@ -233,7 +233,7 @@ namespace DoodleJump
         public bool OnCollisionEnter()
         {
             
-            foreach (var target in _ParentCanvas.Children.OfType<Platform>())
+            foreach (var target in canvas.Children.OfType<Platform>())
             {
 
                 if (PointEnter(this.LeftDownPoint, target))
@@ -277,7 +277,7 @@ namespace DoodleJump
         public void ChangePlayerPosition()
         {
 
-            if(LeftUpPoint.Y > (_ParentCanvas.ActualHeight * 1.1))
+            if(LeftUpPoint.Y > (canvas.ActualHeight * 1.1))
             {
 
                 isAlive = false;
@@ -299,13 +299,13 @@ namespace DoodleJump
 
             ResetVelocity();
 
-            double xPos = LeftUpPoint.X + _CurrentVelocity;
+            double xPos = LeftUpPoint.X + CurrentVelocity;
 
-            double yPos = LeftUpPoint.Y - _CurrentVelocityJump;
+            double yPos = LeftUpPoint.Y - CurrentVelocityJump;
 
-            if (xPos < -(_ParentCanvas.ActualWidth * 0.05) ) { xPos = _ParentCanvas.ActualWidth * 0.95; }
+            if (xPos < -(canvas.ActualWidth * 0.05) ) { xPos = canvas.ActualWidth * 0.95; }
 
-            else if (xPos > _ParentCanvas.ActualWidth * 0.95) { xPos = -(_ParentCanvas.ActualWidth * 0.05); }
+            else if (xPos > canvas.ActualWidth * 0.95) { xPos = -(canvas.ActualWidth * 0.05); }
 
             this.SetLocation(new Location(xPos, yPos));
 

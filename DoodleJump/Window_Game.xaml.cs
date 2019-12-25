@@ -8,12 +8,12 @@ namespace DoodleJump
 
     public partial class Window_Game : Window
     {
-        
+
         private double _Width = SystemParameters.PrimaryScreenWidth * 0.3;
 
         private double _Height = SystemParameters.PrimaryScreenHeight * 0.7;
 
-        private void _AcceptWindowSettings()
+        public void _AcceptWindowSettings()
         {
             
             this.Width = _Width;
@@ -28,25 +28,25 @@ namespace DoodleJump
 
         public Window_Game() { InitializeComponent(); }
 
-        private DispatcherTimer _Timer;
+        public DispatcherTimer Timer;
 
-        private Player _Player;
+        public Player player;
 
-        private bool _LeftPress = false;
+        public bool LeftPress = false;
 
-        private bool _RightPress = false;
+        public bool RightPress = false;
 
-        private void _TimerTick(object sender, EventArgs e)
+        public void TimerTick(object sender, EventArgs e)
         {
 
-            if(_Player == null ) { return; }
+            if(player == null ) { return; }
 
-            if(!_Player.isAlive)
+            if(!player.isAlive)
             {
 
-                _Timer.Stop();
+                Timer.Stop();
 
-                Window_Gameover window_Gameover = new Window_Gameover(_Player.score);
+                Window_Gameover window_Gameover = new Window_Gameover(player.score);
 
                 window_Gameover.Show();
 
@@ -56,94 +56,94 @@ namespace DoodleJump
 
             }
 
-            _MovePlayer();
+            MovePlayer();
 
-            _Player.ChangePlayerPosition();
+            player.ChangePlayerPosition();
 
-            _UpdateScore();
+            UpdateScore();
 
-            Camera.TransformCamera(Canvas_GameMap, _Player);
+            Camera.TransformCamera(Canvas_GameMap, player);
 
-            LevelGenerator.GenerateNewPlatform(Canvas_GameMap, _Player);
+            LevelGenerator.GenerateNewPlatform(Canvas_GameMap, player);
             
         }
 
-        private void _UpdateScore() { this.Title = "DoodleJump | Score: " + _Player.score; }
+        public void UpdateScore() { this.Title = "DoodleJump | Score: " + player.score; }
 
-        private void _StartGame()
+        public void StartGame()
         {
 
-            _Timer = new DispatcherTimer();
+            Timer = new DispatcherTimer();
 
-            _Timer.Tick += new EventHandler(_TimerTick);
+            Timer.Tick += new EventHandler(TimerTick);
 
-            _Timer.Interval = new TimeSpan(0, 0, 0, 0, 1);
+            Timer.Interval = new TimeSpan(0, 0, 0, 0, 1);
             
-            _Timer.Start();
+            Timer.Start();
             
             double playerX = (Canvas_GameMap.ActualWidth / 2);
             
             double playerY = (Canvas_GameMap.ActualHeight * 0.95);
             
-            _Player = new Player(Canvas_GameMap, _Width * 0.015, _Height * 0.02, new Location(playerX, playerY));
+            player = new Player(Canvas_GameMap, _Width * 0.015, _Height * 0.02, new Location(playerX, playerY));
             
-            _Player.Width = Canvas_GameMap.ActualWidth * 0.1;
+            player.Width = Canvas_GameMap.ActualWidth * 0.1;
             
-            _Player.Height = Canvas_GameMap.ActualHeight * 0.07;
+            player.Height = Canvas_GameMap.ActualHeight * 0.07;
 
             LevelGenerator.CreateStartPlatform(Canvas_GameMap);
 
         }
-        
+
+        public void MovePlayer()
+        {
+
+            if (LeftPress)
+            {
+
+                player.resetVelocity = false;
+
+                player.MoveLeft();
+
+            }
+
+            else if (RightPress)
+            {
+
+                player.resetVelocity = false;
+
+                player.MoveRight();
+
+            }
+
+        }
+
         private void _Window_Loaded(object sender, RoutedEventArgs e)
         {
             
             _AcceptWindowSettings();
             
-            _StartGame();
-
-        }
-        
-        private void _MovePlayer()
-        {
-            
-            if (_LeftPress)
-            {
-                
-                _Player.resetVelocity = false;
-                
-                _Player.MoveLeft();
-
-            }
-
-            else if (_RightPress)
-            {
-                
-                _Player.resetVelocity = false;
-                
-                _Player.MoveRight();
-
-            }
+            StartGame();
 
         }
         
         private void _Window_KeyDown(object sender, KeyEventArgs e)
         {
             
-            if(e.Key == Key.A) { _LeftPress = true; }
+            if(e.Key == Key.A) { LeftPress = true; }
             
-            else if (e.Key == Key.D) { _RightPress = true; }
+            else if (e.Key == Key.D) { RightPress = true; }
 
         }
         
         private void _Window_KeyUp(object sender, KeyEventArgs e)
         {
             
-            if (e.Key == Key.A) { _LeftPress = false; }
+            if (e.Key == Key.A) { LeftPress = false; }
             
-            else if (e.Key == Key.D) { _RightPress = false; }
+            else if (e.Key == Key.D) { RightPress = false; }
 
-            _Player.resetVelocity = true;
+            player.resetVelocity = true;
 
         }
 

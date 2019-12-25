@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DoodleJump"
-             mc:Ignorable="d" Height="50" Width="50" Loaded="UserControl_Loaded">
+             mc:Ignorable="d" Height="50" Width="50" Loaded="_UserControl_Loaded">
     <Grid>
         <Image x:Name="Image_Enemy" HorizontalAlignment="Left" VerticalAlignment="Top" Source="Sprites/Enemy_Blue.png"/>
 

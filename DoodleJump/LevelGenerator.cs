@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
 using System.Windows.Controls;
 
 namespace DoodleJump
@@ -9,7 +7,7 @@ namespace DoodleJump
     class LevelGenerator
     {
 
-        private static string[] _TypeOfPlatform = { "Platform", "PlatformBroken_1", "PlatformMoving" };
+        public static string[] TypeOfPlatform = { "Platform", "PlatformBroken_1", "PlatformMoving" };
 
         public static void CreateStartPlatform(Canvas tCanvas)
         {
@@ -34,7 +32,7 @@ namespace DoodleJump
 
         }
 
-        private static bool _NeedNewPlatforms(Canvas tCanvas, Player tPlayer)
+        public static bool NeedNewPlatforms(Canvas tCanvas, Player tPlayer)
         {
 
             Platform lastPlatform = tCanvas.Children.OfType<Platform>().First();
@@ -48,7 +46,7 @@ namespace DoodleJump
 
         }
 
-        private static void _RemoveOldPlatforms(Canvas tCanvas)
+        public static void RemoveOldPlatforms(Canvas tCanvas)
         {
 
             for(int i = 0; i < tCanvas.Children.OfType<Platform>().Count(); i++)
@@ -62,7 +60,7 @@ namespace DoodleJump
 
         }
 
-        private static string _GetTypeWithChance(int tChance)
+        public static string GetTypeWithChance(int tChance)
         {
 
             tChance = tChance % 100;
@@ -106,9 +104,9 @@ namespace DoodleJump
         public static void GenerateNewPlatform(Canvas tCanvas, Player player)
         {
             
-            if ( !_NeedNewPlatforms(tCanvas, player) ) { return; }
+            if ( !NeedNewPlatforms(tCanvas, player) ) { return; }
             
-            _RemoveOldPlatforms(tCanvas);
+            RemoveOldPlatforms(tCanvas);
             
             Platform lastPlatform = tCanvas.Children.OfType<Platform>().First();
 
@@ -121,7 +119,7 @@ namespace DoodleJump
             for (int i = 0; i < 20; i++)
             {
 
-                Platform newPlatform = new Platform(_GetTypeWithChance(rand.Next()), tCanvas);
+                Platform newPlatform = new Platform(GetTypeWithChance(rand.Next()), tCanvas);
 
                 double border = tCanvas.ActualWidth * 0.015;
 

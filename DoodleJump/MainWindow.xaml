@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DoodleJump"
         mc:Ignorable="d"
-        Title="Launcher" Height="349" Width="372.5" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
+        Title="Launcher" Height="349" Width="372.5" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="_Window_Loaded">
     <Canvas x:Name="Canvas_Launcher">
         <Canvas.Background>
             <ImageBrush ImageSource="Sprites/Background.jpg" Stretch="UniformToFill">
@@ -29,8 +29,8 @@
                 </TransformGroup>
             </Label.RenderTransform>
         </Label>
-        <Image x:Name="Button_Start" VerticalAlignment="Top" Height="48" Canvas.Left="130" Canvas.Top="120" Width="124" Source="Sprites/Button_play.png" PreviewMouseDown="Button_Start_PreviewMouseDown"/>
-        <Image x:Name="Button_Exit" VerticalAlignment="Top" Height="48" Canvas.Left="130" Canvas.Top="201" Width="124" Source="Sprites/Button_Exit.png" PreviewMouseDown="Button_Exit_PreviewMouseDown">
+        <Image x:Name="Button_Start" VerticalAlignment="Top" Height="48" Canvas.Left="130" Canvas.Top="120" Width="124" Source="Sprites/Button_play.png" PreviewMouseDown="_Button_Start_PreviewMouseDown"/>
+        <Image x:Name="Button_Exit" VerticalAlignment="Top" Height="48" Canvas.Left="130" Canvas.Top="201" Width="124" Source="Sprites/Button_Exit.png" PreviewMouseDown="_Button_Exit_PreviewMouseDown">
         </Image>
 
     </Canvas>

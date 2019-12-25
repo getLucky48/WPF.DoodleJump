@@ -14,15 +14,19 @@ namespace DoodleJump
 
             InitializeComponent();
 
-            _MovingLeft = false;
+            MovingLeft = false;
 
-            _deltaVelocity = 3.0;
+            deltaVelocity = 3.0;
 
-            _Canvas = tCanvas;
+            canvas = tCanvas;
+
+            this.Width = canvas.ActualWidth * 0.1;
+
+            this.Height = canvas.ActualHeight * 0.07;
 
         }
 
-        private Canvas _Canvas;
+        public Canvas canvas;
 
         public Location LeftUpPoint;
 
@@ -32,11 +36,11 @@ namespace DoodleJump
 
         public Location RightDownPoint;
 
-        private bool _MovingLeft;
+        public bool MovingLeft;
 
-        private double _deltaVelocity;
+        public double deltaVelocity;
 
-        private DispatcherTimer _Timer;
+        public DispatcherTimer _Timer;
 
         public void UpdateLocation()
         {
@@ -51,16 +55,16 @@ namespace DoodleJump
 
         }
 
-        private void _MoveEnemy(object sender, EventArgs e)
+        public void MoveEnemy(object sender, EventArgs e)
         {
 
-            if (_MovingLeft)
+            if (MovingLeft)
             {
 
-                if (LeftUpPoint.X < _Canvas.ActualWidth * 0.05)
+                if (LeftUpPoint.X < canvas.ActualWidth * 0.05)
                 {
 
-                    _MovingLeft = !_MovingLeft;
+                    MovingLeft = !MovingLeft;
 
                     Image_Enemy.FlowDirection = FlowDirection.LeftToRight;
 
@@ -69,7 +73,7 @@ namespace DoodleJump
                 else
                 {
 
-                    this.SetValue(Canvas.LeftProperty, (double)this.GetValue(Canvas.LeftProperty) - _deltaVelocity);
+                    this.SetValue(Canvas.LeftProperty, (double)this.GetValue(Canvas.LeftProperty) - deltaVelocity);
 
                 }
 
@@ -78,10 +82,10 @@ namespace DoodleJump
             else
             {
 
-                if (RightUpPoint.X > _Canvas.ActualWidth * 0.95)
+                if (RightUpPoint.X > canvas.ActualWidth * 0.95)
                 {
 
-                    _MovingLeft = !_MovingLeft;
+                    MovingLeft = !MovingLeft;
 
                     Image_Enemy.FlowDirection = FlowDirection.RightToLeft;
 
@@ -90,7 +94,7 @@ namespace DoodleJump
                 else
                 {
 
-                    this.SetValue(Canvas.LeftProperty, (double)this.GetValue(Canvas.LeftProperty) + _deltaVelocity);
+                    this.SetValue(Canvas.LeftProperty, (double)this.GetValue(Canvas.LeftProperty) + deltaVelocity);
 
                 }
 
@@ -100,14 +104,14 @@ namespace DoodleJump
 
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private void _UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             
             this.UpdateLocation();
             
             _Timer = new DispatcherTimer();
 
-            _Timer.Tick += new EventHandler(_MoveEnemy);
+            _Timer.Tick += new EventHandler(MoveEnemy);
             
             _Timer.Interval = new TimeSpan(0, 0, 0, 0, 10);
             
